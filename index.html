@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>응원글 판별기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .input-section {
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .screen-a {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen-b {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .retry-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .loading {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 입력 섹션 -->
+        <div class="input-section" id="inputSection">
+            <h1>📝 응원글 판별기</h1>
+            <textarea 
+                id="textInput" 
+                placeholder="분석할 텍스트를 입력해주세요...&#10;예: 오늘도 화이팅! 넌 할 수 있어!"
+            ></textarea>
+            <br>
+            <button class="analyze-btn" id="analyzeBtn">분석하기</button>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>AI가 분석 중입니다...</p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <!-- 결과 섹션 -->
+        <div class="result-section" id="resultSection">
+            <!-- A 화면: 응원글인 경우 -->
+            <div class="screen-a" id="screenA" style="display: none;">
+                <div class="result-icon">🎉</div>
+                <h2>따뜻한 응원이 감지되었어요!</h2>
+                <p>입력해주신 글에서 진심어린 응원의 마음이 느껴집니다. 이런 따뜻한 말 한마디가 누군가에게는 큰 힘이 될 거예요!</p>
+                <button class="retry-btn" onclick="resetForm()">다른 글 분석하기</button>
+            </div>
+
+            <!-- B 화면: 응원글이 아닌 경우 -->
+            <div class="screen-b" id="screenB" style="display: none;">
+                <div class="result-icon">🤔</div>
+                <h2>응원의 의미가 담기지 않았어요</h2>
+                <p>입력해주신 글은 응원보다는 다른 의미를 담고 있는 것 같아요. 누군가를 격려하고 응원하는 메시지를 작성해보시는 건 어떨까요?</p>
+                <button class="retry-btn" onclick="resetForm()">다시 시도하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        const inputSection = document.getElementById('inputSection');
+        const resultSection = document.getElementById('resultSection');
+        const screenA = document.getElementById('screenA');
+        const screenB = document.getElementById('screenB');
+
+        // 분석 버튼 클릭 이벤트
+        analyzeBtn.addEventListener('click', analyzeText);
+
+        // 엔터키로도 분석 가능
+        textInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                analyzeText();
+            }
+        });
+
+        async function analyzeText() {
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                showError('분석할 텍스트를 입력해주세요!');
+                return;
+            }
+
+            // UI 상태 변경
+            analyzeBtn.disabled = true;
+            loading.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            try {
+                // 우리가 만든 API 엔드포인트 호출
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                // 결과에 따라 화면 표시
+                if (result.isEncouragement) {
+                    showScreen('A');
+                } else {
+                    showScreen('B');
+                }
+                
+            } catch (error) {
+                console.error('API 호출 오류:', error);
+                showError('분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            } finally {
+                // UI 상태 복원
+                analyzeBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function showScreen(type) {
+            inputSection.style.display = 'none';
+            resultSection.style.display = 'block';
+            
+            if (type === 'A') {
+                screenA.style.display = 'block';
+                screenB.style.display = 'none';
+            } else {
+                screenA.style.display = 'none';
+                screenB.style.display = 'block';
+            }
+        }
+
+        function resetForm() {
+            inputSection.style.display = 'block';
+            resultSection.style.display = 'none';
+            screenA.style.display = 'none';
+            screenB.style.display = 'none';
+            errorMessage.style.display = 'none';
+            textInput.value = '';
+            textInput.focus();
+        }
+
+        // 페이지 로드시 입력창에 포커스
+        window.addEventListener('load', () => {
+            textInput.focus();
+        });
+    </script>
+</body>
+</html>
