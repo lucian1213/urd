@@ -295,49 +295,60 @@
             font-family: 'Noto Serif KR', serif;
         }
 
+        .fade-out {
+            animation: fadeOut 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
         .typing-text {
             font-size: 1.3rem;
             color: #e8e8e8;
             font-weight: 500;
             min-height: 2rem;
-        }
-
-        .glitch-text {
-            font-size: 1.3rem;
-            color: #ff4444;
-            font-weight: 500;
-            min-height: 2rem;
+            transition: color 0.3s ease;
         }
 
         .glitching {
-            animation: glitch 0.3s infinite;
+            animation: textGlitch 0.1s infinite;
         }
 
-        @keyframes glitch {
+        @keyframes textGlitch {
             0% { 
                 transform: translate(0);
-                filter: hue-rotate(0deg);
+                text-shadow: 2px 0 #ff0000, -2px 0 #00ff00;
             }
-            20% { 
-                transform: translate(-2px, 2px);
-                filter: hue-rotate(90deg);
+            25% { 
+                transform: translate(-1px, 1px);
+                text-shadow: -2px 0 #ff0000, 2px 0 #00ff00;
             }
-            40% { 
-                transform: translate(-2px, -2px);
-                filter: hue-rotate(180deg);
+            50% { 
+                transform: translate(1px, -1px);
+                text-shadow: 2px 0 #0000ff, -2px 0 #ff0000;
             }
-            60% { 
-                transform: translate(2px, 2px);
-                filter: hue-rotate(270deg);
-            }
-            80% { 
-                transform: translate(2px, -2px);
-                filter: hue-rotate(360deg);
+            75% { 
+                transform: translate(-1px, -1px);
+                text-shadow: -2px 0 #00ff00, 2px 0 #0000ff;
             }
             100% { 
-                transform: translate(0);
-                filter: hue-rotate(0deg);
+                transform: translate(1px, 1px);
+                text-shadow: 2px 0 #ff0000, -2px 0 #00ff00;
             }
+        }
+
+        .screen-shake {
+            animation: screenShake 0.15s infinite;
+        }
+
+        @keyframes screenShake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(2px, 2px) rotate(0.5deg); }
+            50% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            75% { transform: translate(1px, -2px) rotate(0.5deg); }
+            100% { transform: translate(-2px, -1px) rotate(-0.5deg); }
         }
 
         .revelation-message {
@@ -350,60 +361,70 @@
             color: #4CAF50;
             margin-bottom: 2rem;
             line-height: 1.6;
+            min-height: 2rem;
         }
 
-        .fade-in {
-            animation: fadeIn 1s ease-in-out;
+        .hidden-message-container {
+            margin-top: 2rem;
+            min-height: 3rem;
         }
 
-        .hidden-message {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #ffffff;
-            letter-spacing: 2px;
-            margin-top: 1rem;
-        }
-
-        .highlighted-char {
-            background-color: #ffff00;
-            color: #000000;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-weight: bold;
-            animation: pulse 0.5s ease-in-out;
-        }
-
-        .revealed-char {
+        .first-char-only {
             color: #ffff00;
             font-weight: bold;
-            text-shadow: 0 0 10px #ffff00;
-            animation: glow 0.5s ease-in-out;
+            font-size: 1.1em;
+            text-shadow: 0 0 5px #ffff00;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .fade-out-text {
+            transition: opacity 1s ease-out;
         }
 
-        @keyframes glow {
-            0% { 
+        .moving-chars {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4CAF50;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px #4CAF50;
+        }
+
+        .moving-char {
+            display: inline-block;
+            animation: charMove 0.8s ease-out;
+        }
+
+        @keyframes charMove {
+            0% {
+                transform: translateY(-50px);
                 opacity: 0;
-                transform: scale(0.8);
             }
             50% {
                 opacity: 1;
-                transform: scale(1.2);
             }
-            100% { 
+            100% {
+                transform: translateY(0);
                 opacity: 1;
+            }
+        }
+
+        .completed-message {
+            animation: finalGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes finalGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px #4CAF50;
                 transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50;
+                transform: scale(1.05);
             }
         }
 
         /* 모바일 애니메이션 */
         @media (max-width: 768px) {
-            .typing-text, .glitch-text {
+            .typing-text {
                 font-size: 1.1rem;
             }
             
@@ -411,14 +432,13 @@
                 font-size: 1.3rem;
             }
             
-            .hidden-message {
+            .moving-chars {
                 font-size: 1rem;
-                letter-spacing: 1px;
             }
         }
 
         @media (max-width: 480px) {
-            .typing-text, .glitch-text {
+            .typing-text {
                 font-size: 1rem;
             }
             
@@ -426,9 +446,8 @@
                 font-size: 1.2rem;
             }
             
-            .hidden-message {
+            .moving-chars {
                 font-size: 0.9rem;
-                letter-spacing: 1px;
             }
         }
 
@@ -779,29 +798,34 @@
         }
 
         function startEncouragementAnimation(nickname, message) {
-            // 입력 섹션 숨기기
+            // 입력 섹션과 버튼을 페이드아웃으로 제거
             const inputSection = document.querySelector('.input-section');
             const finalButton = document.querySelector('.final-button');
             
-            inputSection.style.display = 'none';
-            finalButton.style.display = 'none';
+            inputSection.classList.add('fade-out');
+            finalButton.classList.add('fade-out');
             
-            // 애니메이션 컨테이너 생성
-            const animationHTML = `
-                <div class="animation-container">
-                    <div class="typing-text" id="typingText"></div>
-                    <div class="glitch-text" id="glitchText" style="display: none;">지....지...지....지...</div>
-                    <div class="revelation-message" id="revelationMessage" style="display: none;">
-                        <p class="big-message">아직 포기 하지마. 운명은 바꿀 수 있어.</p>
-                        <div class="hidden-message" id="hiddenMessage"></div>
+            // 페이드아웃 완료 후 제거 및 타이핑 시작
+            setTimeout(() => {
+                inputSection.style.display = 'none';
+                finalButton.style.display = 'none';
+                
+                // 애니메이션 컨테이너 생성
+                const animationHTML = `
+                    <div class="animation-container">
+                        <div class="typing-text" id="typingText"></div>
+                        <div class="revelation-message" id="revelationMessage" style="display: none;">
+                            <p class="big-message" id="bigMessageText"></p>
+                            <div class="hidden-message-container" id="hiddenMessageContainer"></div>
+                        </div>
                     </div>
-                </div>
-            `;
-            
-            document.querySelector('.container').insertAdjacentHTML('beforeend', animationHTML);
-            
-            // 애니메이션 시퀀스 시작
-            startTypingAnimation();
+                `;
+                
+                document.querySelector('.container').insertAdjacentHTML('beforeend', animationHTML);
+                
+                // 타이핑 애니메이션 시작
+                startTypingAnimation();
+            }, 800); // 페이드아웃 시간과 맞춤
         }
 
         function startTypingAnimation() {
@@ -823,60 +847,116 @@
 
         function startGlitchEffect() {
             const typingElement = document.getElementById('typingText');
-            const glitchElement = document.getElementById('glitchText');
+            const container = document.querySelector('.container');
             
-            // 기존 텍스트 숨기고 글리치 텍스트 보이기
-            typingElement.style.display = 'none';
-            glitchElement.style.display = 'block';
+            // 텍스트를 빨간색으로 변경하고 글리치 효과 추가
+            typingElement.style.color = '#ff4444';
+            typingElement.classList.add('glitching');
             
-            // 글리치 애니메이션 클래스 추가
-            glitchElement.classList.add('glitching');
+            // 화면 전체 흔들림 효과
+            container.classList.add('screen-shake');
             
             // 3초 후 계시 메시지 표시
             setTimeout(showRevelation, 3000);
         }
 
         function showRevelation() {
-            const glitchElement = document.getElementById('glitchText');
+            const typingElement = document.getElementById('typingText');
             const revelationElement = document.getElementById('revelationMessage');
+            const container = document.querySelector('.container');
             
-            // 글리치 텍스트 숨기기
-            glitchElement.style.display = 'none';
+            // 글리치 효과 중단
+            typingElement.classList.remove('glitching');
+            container.classList.remove('screen-shake');
+            typingElement.style.display = 'none';
             
-            // 계시 메시지 표시
+            // 계시 메시지 표시 및 타이핑 효과
             revelationElement.style.display = 'block';
-            revelationElement.classList.add('fade-in');
-            
-            // 1초 후 숨겨진 메시지 강조 시작
-            setTimeout(highlightHiddenMessage, 1500);
+            startBigMessageTyping();
         }
 
-        function highlightHiddenMessage() {
-            const hiddenMessageElement = document.getElementById('hiddenMessage');
+        function startBigMessageTyping() {
+            const bigMessageElement = document.getElementById('bigMessageText');
+            const text = "아직 포기 하지마. 운명은 바꿀 수 있어.";
+            let index = 0;
+            
+            const typeWriter = setInterval(() => {
+                bigMessageElement.textContent = text.slice(0, index + 1);
+                index++;
+                
+                if (index >= text.length) {
+                    clearInterval(typeWriter);
+                    // 1초 후 숨겨진 메시지 추출 시작
+                    setTimeout(startHiddenMessageExtraction, 1000);
+                }
+            }, 80);
+        }
+
+        function startHiddenMessageExtraction() {
             const contentParagraphs = document.querySelectorAll('.content p');
             const hiddenText = "아직게임은끝나지않았어";
+            const hiddenMessageContainer = document.getElementById('hiddenMessageContainer');
             
             // 숨겨진 메시지 컨테이너 표시
-            hiddenMessageElement.style.display = 'block';
+            hiddenMessageContainer.style.display = 'block';
             
-            // 원문에서 첫 글자들을 하나씩 강조
             let index = 0;
-            const highlightInterval = setInterval(() => {
+            const extractInterval = setInterval(() => {
                 if (index < contentParagraphs.length && index < hiddenText.length) {
                     const paragraph = contentParagraphs[index];
                     const firstChar = paragraph.textContent.charAt(0);
+                    const restOfText = paragraph.textContent.slice(1);
                     
-                    // 첫 글자를 강조 표시
-                    paragraph.innerHTML = `<span class="highlighted-char">${firstChar}</span>${paragraph.textContent.slice(1)}`;
+                    // 첫 글자만 남기고 나머지는 페이드아웃
+                    paragraph.innerHTML = `<span class="first-char-only">${firstChar}</span><span class="fade-out-text">${restOfText}</span>`;
                     
-                    // 숨겨진 메시지에도 글자 추가
-                    hiddenMessageElement.innerHTML += `<span class="revealed-char">${hiddenText.charAt(index)}</span>`;
+                    // 나머지 텍스트를 페이드아웃
+                    setTimeout(() => {
+                        const fadeOutSpan = paragraph.querySelector('.fade-out-text');
+                        if (fadeOutSpan) {
+                            fadeOutSpan.style.opacity = '0';
+                        }
+                    }, 100);
                     
                     index++;
                 } else {
-                    clearInterval(highlightInterval);
+                    clearInterval(extractInterval);
+                    // 모든 추출이 완료되면 글자들을 아래로 이동
+                    setTimeout(moveCharsToBottom, 1000);
                 }
             }, 500);
+        }
+
+        function moveCharsToBottom() {
+            const firstChars = document.querySelectorAll('.first-char-only');
+            const hiddenMessageContainer = document.getElementById('hiddenMessageContainer');
+            const hiddenText = "아직게임은끝나지않았어";
+            
+            // 이동할 글자들을 담을 컨테이너 생성
+            hiddenMessageContainer.innerHTML = '<div class="moving-chars"></div>';
+            const movingContainer = hiddenMessageContainer.querySelector('.moving-chars');
+            
+            firstChars.forEach((charElement, index) => {
+                if (index < hiddenText.length) {
+                    const char = charElement.textContent;
+                    
+                    // 새로운 글자 요소 생성
+                    const movingChar = document.createElement('span');
+                    movingChar.textContent = char;
+                    movingChar.className = 'moving-char';
+                    movingContainer.appendChild(movingChar);
+                    
+                    // 원래 글자는 투명하게
+                    setTimeout(() => {
+                        charElement.style.opacity = '0';
+                    }, index * 100);
+                }
+            });
+            
+            // 완성된 메시지 스타일 적용
+            setTimeout(() => {
+                movingContainer.classList.add('completed-message');
+            }, 1500);
         }
 
         function goBack() {
