@@ -233,7 +233,99 @@
             }
         }
 
-        /* 결과 페이지 스타일 */
+        /* 게임 종료 페이지 스타일 */
+        .game-end-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-end-content {
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .end-message {
+            color: #ffffff;
+            font-family: 'Noto Serif KR', serif;
+        }
+
+        .end-main-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: #e8e8e8;
+            line-height: 1.6;
+        }
+
+        .end-thanks {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            color: #cccccc;
+        }
+
+        .author-signature {
+            margin-bottom: 3rem;
+            font-style: italic;
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        .the-end {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin-top: 2rem;
+        }
+
+        /* 모바일 종료 페이지 */
+        @media (max-width: 768px) {
+            .end-main-text {
+                font-size: 1.2rem;
+            }
+            
+            .end-thanks {
+                font-size: 1rem;
+            }
+            
+            .author-signature {
+                font-size: 0.9rem;
+            }
+            
+            .the-end {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .end-main-text {
+                font-size: 1.1rem;
+            }
+            
+            .end-thanks {
+                font-size: 0.95rem;
+            }
+            
+            .author-signature {
+                font-size: 0.85rem;
+            }
+            
+            .the-end {
+                font-size: 1.3rem;
+                letter-spacing: 1px;
+            }
+        }
         .result-container {
             position: fixed;
             top: 0;
@@ -431,15 +523,8 @@
                 return;
             }
             
-            // 버튼 비활성화 및 로딩 표시
-            const button = document.querySelector('.final-button');
-            const originalText = button.textContent;
-            button.disabled = true;
-            button.textContent = 'AI가 응원글을 분석 중...';
-            button.style.opacity = '0.6';
-            
             try {
-                // 응원글 AI 판별 실행
+                // 응원글 AI 판별 실행 (로딩 없이 바로)
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: {
@@ -454,65 +539,60 @@
 
                 const result = await response.json();
                 
-                // 결과 페이지 표시
-                showResultPage(result, nickname, message);
+                // 결과에 따라 다른 동작
+                if (result.isEncouragement) {
+                    // 응원글인 경우: 글리치 애니메이션 (다음 단계에서 구현)
+                    startEncouragementAnimation(nickname, message);
+                } else {
+                    // 응원글이 아닌 경우: 종료 페이지로 이동
+                    showGameEndPage();
+                }
                 
             } catch (error) {
                 console.error('AI 분석 오류:', error);
                 alert('응원글 분석 중 오류가 발생했습니다. 다시 시도해주세요.');
-            } finally {
-                // 버튼 상태 복원
-                button.disabled = false;
-                button.textContent = originalText;
-                button.style.opacity = '1';
             }
         }
 
-        function showResultPage(result, nickname, message) {
+        function showGameEndPage() {
             // 기존 페이지 숨기기
             document.querySelector('.container').style.display = 'none';
             
-            // 결과 페이지 생성
-            const resultHTML = `
-                <div class="result-container">
-                    <div class="result-content">
-                        <h1 class="result-title">📊 응원글 분석 결과</h1>
-                        
-                        <div class="user-info">
-                            <p><strong>닉네임:</strong> ${nickname}</p>
-                            <p><strong>작성한 글:</strong></p>
-                            <div class="user-message">"${message}"</div>
+            // 종료 페이지 HTML
+            const endPageHTML = `
+                <div class="game-end-container">
+                    <div class="game-end-content">
+                        <div class="end-message">
+                            <p class="end-main-text">아쉽게도 게임은 여기까지입니다.</p>
+                            <p class="end-thanks">즐겨주셔서 감사드립니다!</p>
+                            <div class="author-signature">
+                                <p>-작가 루시안 드림-</p>
+                            </div>
+                            <div class="the-end">
+                                <p>THE END.</p>
+                            </div>
                         </div>
-                        
-                        <div class="analysis-result ${result.isEncouragement ? 'encouragement' : 'not-encouragement'}">
-                            <div class="result-icon">${result.isEncouragement ? '🎉' : '🤔'}</div>
-                            <h2>${result.isEncouragement ? '응원글입니다!' : '응원글이 아닙니다'}</h2>
-                            <p class="result-reason">${result.reason}</p>
-                            ${result.method ? `<p class="analysis-method">분석 방법: ${result.method}</p>` : ''}
-                        </div>
-                        
-                        <button class="back-button" onclick="goBack()">다시 작성하기</button>
-                        ${result.isEncouragement ? '<button class="continue-button" onclick="goToRealFinalPage()">마지막 페이지로</button>' : ''}
                     </div>
                 </div>
             `;
             
-            document.body.insertAdjacentHTML('beforeend', resultHTML);
+            document.body.insertAdjacentHTML('beforeend', endPageHTML);
+        }
+
+        function startEncouragementAnimation(nickname, message) {
+            // 응원글인 경우의 애니메이션 (다음 단계에서 구현)
+            alert('응원글 감지! 글리치 애니메이션 시작 (아직 미구현)');
         }
 
         function goBack() {
-            // 결과 페이지 제거
-            const resultContainer = document.querySelector('.result-container');
-            if (resultContainer) {
-                resultContainer.remove();
+            // 종료 페이지에서 돌아가기 (필요시)
+            const endContainer = document.querySelector('.game-end-container');
+            if (endContainer) {
+                endContainer.remove();
             }
             
             // 원래 페이지 다시 표시
             document.querySelector('.container').style.display = 'block';
-        }
-
-        function goToRealFinalPage() {
-            alert('진짜 마지막 페이지로 이동합니다! (아직 미구현)');
         }
 
         // 엔터키 이벤트 처리
