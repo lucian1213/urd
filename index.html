@@ -288,6 +288,205 @@
             margin-top: 2rem;
         }
 
+        /* 응원글 애니메이션 스타일 */
+        .animation-container {
+            margin-top: 2rem;
+            text-align: center;
+            font-family: 'Noto Serif KR', serif;
+        }
+
+        .typing-text {
+            font-size: 1.3rem;
+            color: #e8e8e8;
+            font-weight: 500;
+            min-height: 2rem;
+        }
+
+        .glitch-text {
+            font-size: 1.3rem;
+            color: #ff4444;
+            font-weight: 500;
+            min-height: 2rem;
+        }
+
+        .glitching {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { 
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+            20% { 
+                transform: translate(-2px, 2px);
+                filter: hue-rotate(90deg);
+            }
+            40% { 
+                transform: translate(-2px, -2px);
+                filter: hue-rotate(180deg);
+            }
+            60% { 
+                transform: translate(2px, 2px);
+                filter: hue-rotate(270deg);
+            }
+            80% { 
+                transform: translate(2px, -2px);
+                filter: hue-rotate(360deg);
+            }
+            100% { 
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+        }
+
+        .revelation-message {
+            margin-top: 3rem;
+        }
+
+        .big-message {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4CAF50;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .hidden-message {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+        }
+
+        .highlighted-char {
+            background-color: #ffff00;
+            color: #000000;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        .revealed-char {
+            color: #ffff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffff00;
+            animation: glow 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            0% { 
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% { 
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 모바일 애니메이션 */
+        @media (max-width: 768px) {
+            .typing-text, .glitch-text {
+                font-size: 1.1rem;
+            }
+            
+            .big-message {
+                font-size: 1.3rem;
+            }
+            
+            .hidden-message {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .typing-text, .glitch-text {
+                font-size: 1rem;
+            }
+            
+            .big-message {
+                font-size: 1.2rem;
+            }
+            
+            .hidden-message {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+        }
+
+        /* 모바일 종료 페이지 */
+        .game-end-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-end-content {
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .end-message {
+            color: #ffffff;
+            font-family: 'Noto Serif KR', serif;
+        }
+
+        .end-main-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: #e8e8e8;
+            line-height: 1.6;
+        }
+
+        .end-thanks {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            color: #cccccc;
+        }
+
+        .author-signature {
+            margin-bottom: 3rem;
+            font-style: italic;
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        .the-end {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin-top: 2rem;
+        }
+
         /* 모바일 종료 페이지 */
         @media (max-width: 768px) {
             .end-main-text {
@@ -580,8 +779,104 @@
         }
 
         function startEncouragementAnimation(nickname, message) {
-            // 응원글인 경우의 애니메이션 (다음 단계에서 구현)
-            alert('응원글 감지! 글리치 애니메이션 시작 (아직 미구현)');
+            // 입력 섹션 숨기기
+            const inputSection = document.querySelector('.input-section');
+            const finalButton = document.querySelector('.final-button');
+            
+            inputSection.style.display = 'none';
+            finalButton.style.display = 'none';
+            
+            // 애니메이션 컨테이너 생성
+            const animationHTML = `
+                <div class="animation-container">
+                    <div class="typing-text" id="typingText"></div>
+                    <div class="glitch-text" id="glitchText" style="display: none;">지....지...지....지...</div>
+                    <div class="revelation-message" id="revelationMessage" style="display: none;">
+                        <p class="big-message">아직 포기 하지마. 운명은 바꿀 수 있어.</p>
+                        <div class="hidden-message" id="hiddenMessage"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container').insertAdjacentHTML('beforeend', animationHTML);
+            
+            // 애니메이션 시퀀스 시작
+            startTypingAnimation();
+        }
+
+        function startTypingAnimation() {
+            const typingElement = document.getElementById('typingText');
+            const text = "아쉽게도 게임은 여기까지";
+            let index = 0;
+            
+            const typeWriter = setInterval(() => {
+                typingElement.textContent = text.slice(0, index + 1);
+                index++;
+                
+                if (index >= text.length) {
+                    clearInterval(typeWriter);
+                    // 1초 후 글리치 시작
+                    setTimeout(startGlitchEffect, 1000);
+                }
+            }, 100);
+        }
+
+        function startGlitchEffect() {
+            const typingElement = document.getElementById('typingText');
+            const glitchElement = document.getElementById('glitchText');
+            
+            // 기존 텍스트 숨기고 글리치 텍스트 보이기
+            typingElement.style.display = 'none';
+            glitchElement.style.display = 'block';
+            
+            // 글리치 애니메이션 클래스 추가
+            glitchElement.classList.add('glitching');
+            
+            // 3초 후 계시 메시지 표시
+            setTimeout(showRevelation, 3000);
+        }
+
+        function showRevelation() {
+            const glitchElement = document.getElementById('glitchText');
+            const revelationElement = document.getElementById('revelationMessage');
+            
+            // 글리치 텍스트 숨기기
+            glitchElement.style.display = 'none';
+            
+            // 계시 메시지 표시
+            revelationElement.style.display = 'block';
+            revelationElement.classList.add('fade-in');
+            
+            // 1초 후 숨겨진 메시지 강조 시작
+            setTimeout(highlightHiddenMessage, 1500);
+        }
+
+        function highlightHiddenMessage() {
+            const hiddenMessageElement = document.getElementById('hiddenMessage');
+            const contentParagraphs = document.querySelectorAll('.content p');
+            const hiddenText = "아직게임은끝나지않았어";
+            
+            // 숨겨진 메시지 컨테이너 표시
+            hiddenMessageElement.style.display = 'block';
+            
+            // 원문에서 첫 글자들을 하나씩 강조
+            let index = 0;
+            const highlightInterval = setInterval(() => {
+                if (index < contentParagraphs.length && index < hiddenText.length) {
+                    const paragraph = contentParagraphs[index];
+                    const firstChar = paragraph.textContent.charAt(0);
+                    
+                    // 첫 글자를 강조 표시
+                    paragraph.innerHTML = `<span class="highlighted-char">${firstChar}</span>${paragraph.textContent.slice(1)}`;
+                    
+                    // 숨겨진 메시지에도 글자 추가
+                    hiddenMessageElement.innerHTML += `<span class="revealed-char">${hiddenText.charAt(index)}</span>`;
+                    
+                    index++;
+                } else {
+                    clearInterval(highlightInterval);
+                }
+            }, 500);
         }
 
         function goBack() {
