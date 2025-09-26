@@ -28,6 +28,11 @@
             margin: 0 auto;
             padding: 30px 15px;
             animation: fadeIn 1.5s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        .container.animation-done {
+            animation: none;
         }
 
         @keyframes fadeIn {
@@ -543,6 +548,10 @@
         }
 
         function startEncouragementSequence() {
+            // 컨테이너 애니메이션 제거
+            const container = document.querySelector('.container');
+            container.classList.add('animation-done');
+            
             // 1단계: 입력 섹션 페이드아웃
             const inputSection = document.getElementById('inputSection');
             const finalButton = document.getElementById('finalButton');
@@ -560,9 +569,23 @@
         }
 
         function startTypingAnimation() {
-            // 타이핑 영역 추가 (기존 내용은 그대로 유지)
+            // 새로운 애니메이션 영역을 body에 직접 추가 (컨테이너 외부)
+            const animationContainer = document.createElement('div');
+            animationContainer.id = 'animationContainer';
+            animationContainer.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                z-index: 100;
+                max-width: 600px;
+                width: 90%;
+            `;
+            
             const typingHTML = '<div class="typing-area"><div class="typing-text" id="typingText"></div></div>';
-            document.querySelector('.container').insertAdjacentHTML('beforeend', typingHTML);
+            animationContainer.innerHTML = typingHTML;
+            document.body.appendChild(animationContainer);
             
             const typingElement = document.getElementById('typingText');
             const text = "아쉽게도 게임은 여기까지";
@@ -599,8 +622,9 @@
         }
 
         function startGreenMessage() {
+            const animationContainer = document.getElementById('animationContainer');
             const greenHTML = '<div class="green-message" id="greenMessage"></div>';
-            document.querySelector('.typing-area').insertAdjacentHTML('beforeend', greenHTML);
+            animationContainer.querySelector('.typing-area').insertAdjacentHTML('beforeend', greenHTML);
             
             const greenElement = document.getElementById('greenMessage');
             const text = "아직 포기 하지마. 운명은 바꿀 수 있어.";
@@ -663,9 +687,10 @@
                 }
             });
             
-            // 최종 메시지 표시
+            // 최종 메시지를 애니메이션 컨테이너에 표시
+            const animationContainer = document.getElementById('animationContainer');
             const finalHTML = `<div class="final-message">${finalText}</div>`;
-            document.querySelector('.typing-area').insertAdjacentHTML('beforeend', finalHTML);
+            animationContainer.querySelector('.typing-area').insertAdjacentHTML('beforeend', finalHTML);
             
             // 원래 첫 글자들 숨기기
             firstChars.forEach(char => {
