@@ -79,6 +79,7 @@
             padding: 1.5rem;
             border-radius: 12px;
             border: 1px solid #333;
+            transition: opacity 0.8s ease-out;
         }
 
         .input-group {
@@ -190,118 +191,15 @@
             transform: translateY(0);
         }
 
-        .final-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* 모바일 최적화 - 적당한 폰트 */
-        @media (max-width: 768px) {
-            .content {
-                font-size: 0.9rem !important;
-                line-height: 1.6 !important;
-            }
-            
-            .title {
-                font-size: 1.4rem;
-            }
-            
-            .container {
-                padding: 20px 10px;
-            }
-            
-            .input-section {
-                padding: 1.2rem;
-                margin: 2rem 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .content {
-                font-size: 0.85rem !important;
-                line-height: 1.5 !important;
-            }
-            
-            .title {
-                font-size: 1.3rem;
-                letter-spacing: 0.5px;
-            }
-            
-            .input-section {
-                padding: 1rem;
-            }
-        }
-
-        /* 게임 종료 페이지 스타일 */
-        .game-end-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .game-end-content {
-            text-align: center;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        .end-message {
-            color: #ffffff;
-            font-family: 'Noto Serif KR', serif;
-        }
-
-        .end-main-text {
-            font-size: 1.4rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-            color: #e8e8e8;
-            line-height: 1.6;
-        }
-
-        .end-thanks {
-            font-size: 1.1rem;
-            font-weight: 400;
-            margin-bottom: 3rem;
-            color: #cccccc;
-        }
-
-        .author-signature {
-            margin-bottom: 3rem;
-            font-style: italic;
-            color: #aaa;
-            font-size: 1rem;
-        }
-
-        .the-end {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: 3px;
-            margin-top: 2rem;
-        }
-
-        /* 응원글 애니메이션 스타일 */
-        .animation-container {
-            margin-top: 2rem;
-            text-align: center;
-            font-family: 'Noto Serif KR', serif;
-        }
-
+        /* 애니메이션 관련 스타일 */
         .fade-out {
-            animation: fadeOut 0.8s ease-out forwards;
+            opacity: 0 !important;
         }
 
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+        .typing-area {
+            margin-top: 2rem;
+            text-align: center;
+            font-family: 'Noto Serif KR', serif;
         }
 
         .typing-text {
@@ -313,6 +211,7 @@
         }
 
         .glitching {
+            color: #ff4444 !important;
             animation: textGlitch 0.1s infinite;
         }
 
@@ -351,31 +250,20 @@
             100% { transform: translate(-2px, -1px) rotate(-0.5deg); }
         }
 
-        .revelation-message {
-            margin-top: 3rem;
-        }
-
-        .big-message {
+        .green-message {
             font-size: 1.5rem;
             font-weight: 600;
             color: #4CAF50;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            min-height: 2rem;
-            opacity: 1; /* 바로 보이게 */
-        }
-
-        .hidden-message-container {
             margin-top: 2rem;
-            min-height: 3rem;
+            line-height: 1.6;
+            text-align: center;
         }
 
-        .first-char-highlighted {
+        .first-char-only {
             color: #ffff00;
             font-weight: bold;
             font-size: 1.1em;
             text-shadow: 0 0 5px #ffff00;
-            /* 첫 글자는 그대로 남아있음 */
         }
 
         .fade-out-text {
@@ -383,38 +271,18 @@
         }
 
         .fade-out-paragraph {
-            animation: fadeOut 1s ease-out forwards;
+            transition: opacity 1s ease-out;
+            opacity: 0;
         }
 
-        .moving-chars {
+        .final-message {
             font-size: 1.2rem;
             font-weight: bold;
             color: #4CAF50;
             letter-spacing: 1px;
             text-shadow: 0 0 10px #4CAF50;
-        }
-
-        .moving-char {
-            display: inline-block;
-            animation: charMoveDown 1s ease-out forwards;
-            opacity: 0;
-        }
-
-        @keyframes charMoveDown {
-            0% {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .completed-message {
+            margin-top: 1rem;
+            text-align: center;
             animation: finalGlow 2s ease-in-out infinite;
         }
 
@@ -429,36 +297,7 @@
             }
         }
 
-        /* 모바일 애니메이션 */
-        @media (max-width: 768px) {
-            .typing-text {
-                font-size: 1.1rem;
-            }
-            
-            .big-message {
-                font-size: 1.3rem;
-            }
-            
-            .moving-chars {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .typing-text {
-                font-size: 1rem;
-            }
-            
-            .big-message {
-                font-size: 1.2rem;
-            }
-            
-            .moving-chars {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* 모바일 종료 페이지 */
+        /* 게임 종료 페이지 */
         .game-end-container {
             position: fixed;
             top: 0;
@@ -513,8 +352,34 @@
             margin-top: 2rem;
         }
 
-        /* 모바일 종료 페이지 */
+        /* 모바일 최적화 */
         @media (max-width: 768px) {
+            .content {
+                font-size: 0.9rem !important;
+                line-height: 1.6 !important;
+            }
+            
+            .title {
+                font-size: 1.4rem;
+            }
+            
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .input-section {
+                padding: 1.2rem;
+                margin: 2rem 0;
+            }
+
+            .typing-text {
+                font-size: 1.1rem;
+            }
+            
+            .green-message {
+                font-size: 1.3rem;
+            }
+            
             .end-main-text {
                 font-size: 1.2rem;
             }
@@ -522,156 +387,32 @@
             .end-thanks {
                 font-size: 1rem;
             }
-            
-            .author-signature {
-                font-size: 0.9rem;
-            }
-            
-            .the-end {
-                font-size: 1.5rem;
-                letter-spacing: 2px;
-            }
         }
 
         @media (max-width: 480px) {
-            .end-main-text {
-                font-size: 1.1rem;
+            .content {
+                font-size: 0.85rem !important;
+                line-height: 1.5 !important;
             }
             
-            .end-thanks {
-                font-size: 0.95rem;
-            }
-            
-            .author-signature {
-                font-size: 0.85rem;
-            }
-            
-            .the-end {
+            .title {
                 font-size: 1.3rem;
-                letter-spacing: 1px;
+                letter-spacing: 0.5px;
+            }
+            
+            .input-section {
+                padding: 1rem;
+            }
+
+            .typing-text {
+                font-size: 1rem;
+            }
+            
+            .green-message {
+                font-size: 1.2rem;
             }
         }
-        .result-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 20px;
-        }
 
-        .result-content {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 30px 15px;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .result-title {
-            font-size: 1.6rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #ffffff;
-        }
-
-        .user-info {
-            background: rgba(20, 20, 20, 0.8);
-            padding: 1.3rem;
-            border-radius: 10px;
-            border: 1px solid #333;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-        }
-
-        .user-info strong {
-            color: #ffffff;
-        }
-
-        .user-message {
-            background: rgba(40, 40, 40, 0.8);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 0.5rem;
-            border-left: 3px solid #666;
-            font-style: italic;
-        }
-
-        .analysis-result {
-            text-align: center;
-            padding: 1.8rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-
-        .analysis-result.encouragement {
-            background: linear-gradient(135deg, #2d5016 0%, #3d6b1f 100%);
-            border: 2px solid #4CAF50;
-        }
-
-        .analysis-result.not-encouragement {
-            background: linear-gradient(135deg, #4a1515 0%, #6b2020 100%);
-            border: 2px solid #ff6b6b;
-        }
-
-        .result-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .analysis-result h2 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-
-        .result-reason {
-            font-size: 0.95rem;
-            color: #e8e8e8;
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .analysis-method {
-            font-size: 0.8rem;
-            color: #aaa;
-            font-style: italic;
-        }
-
-        .back-button, .continue-button {
-            display: inline-block;
-            margin: 0.5rem;
-            padding: 0.9rem 1.5rem;
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-            border: 2px solid #444;
-            color: #ffffff;
-            font-family: 'Noto Serif KR', serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .continue-button {
-            background: linear-gradient(135deg, #2d5016 0%, #3d6b1f 100%);
-            border-color: #4CAF50;
-        }
-
-        .back-button:hover, .continue-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-        }
-
-        .continue-button:hover {
-            background: linear-gradient(135deg, #3d6b1f 0%, #4d7b2f 100%);
-        }
-
-        /* 스크롤바 */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -709,10 +450,10 @@
             <p>았던 순간 모두 당신의 운명이에요.</p>
             <p>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
             
-            <p class="section-break">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
+            <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
         </div>
 
-        <div class="input-section">
+        <div class="input-section" id="inputSection">
             <div class="input-group">
                 <label for="nickname">닉네임</label>
                 <input type="text" id="nickname" placeholder="닉네임을 입력해주세요" maxlength="20">
@@ -726,7 +467,7 @@
             <p class="small-text">(아직도 운명을 바꾸고 싶다면, 진심을 다해 응원글을 적어주세요.)</p>
         </div>
 
-        <button class="final-button" onclick="goToFinalPage()">
+        <button class="final-button" id="finalButton" onclick="goToFinalPage()">
             마지막 페이지
         </button>
     </div>
@@ -749,7 +490,7 @@
             }
             
             try {
-                // 응원글 AI 판별 실행 (로딩 없이 바로)
+                // 응원글 AI 판별 실행
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: {
@@ -764,12 +505,11 @@
 
                 const result = await response.json();
                 
-                // 결과에 따라 다른 동작
                 if (result.isEncouragement) {
-                    // 응원글인 경우: 글리치 애니메이션 (다음 단계에서 구현)
-                    startEncouragementAnimation(nickname, message);
+                    // 응원글인 경우: 애니메이션 시작
+                    startEncouragementSequence();
                 } else {
-                    // 응원글이 아닌 경우: 종료 페이지로 이동
+                    // 응원글이 아닌 경우: 종료 페이지
                     showGameEndPage();
                 }
                 
@@ -780,10 +520,8 @@
         }
 
         function showGameEndPage() {
-            // 기존 페이지 숨기기
             document.querySelector('.container').style.display = 'none';
             
-            // 종료 페이지 HTML
             const endPageHTML = `
                 <div class="game-end-container">
                     <div class="game-end-content">
@@ -804,38 +542,28 @@
             document.body.insertAdjacentHTML('beforeend', endPageHTML);
         }
 
-        function startEncouragementAnimation(nickname, message) {
-            // 입력 섹션과 버튼을 페이드아웃으로 제거
-            const inputSection = document.querySelector('.input-section');
-            const finalButton = document.querySelector('.final-button');
+        function startEncouragementSequence() {
+            // 1단계: 입력 섹션 페이드아웃
+            const inputSection = document.getElementById('inputSection');
+            const finalButton = document.getElementById('finalButton');
             
             inputSection.classList.add('fade-out');
             finalButton.classList.add('fade-out');
             
-            // 페이드아웃 완료 후 제거 및 타이핑 시작
             setTimeout(() => {
                 inputSection.style.display = 'none';
                 finalButton.style.display = 'none';
                 
-                // 애니메이션 컨테이너 생성
-                const animationHTML = `
-                    <div class="animation-container">
-                        <div class="typing-text" id="typingText"></div>
-                        <div class="revelation-message" id="revelationMessage" style="display: none;">
-                            <p class="big-message" id="bigMessageText"></p>
-                            <div class="hidden-message-container" id="hiddenMessageContainer"></div>
-                        </div>
-                    </div>
-                `;
-                
-                document.querySelector('.container').insertAdjacentHTML('beforeend', animationHTML);
-                
-                // 타이핑 애니메이션 시작
+                // 2단계: 타이핑 시작
                 startTypingAnimation();
-            }, 800); // 페이드아웃 시간과 맞춤
+            }, 800);
         }
 
         function startTypingAnimation() {
+            // 타이핑 영역 추가 (기존 내용은 그대로 유지)
+            const typingHTML = '<div class="typing-area"><div class="typing-text" id="typingText"></div></div>';
+            document.querySelector('.container').insertAdjacentHTML('beforeend', typingHTML);
+            
             const typingElement = document.getElementById('typingText');
             const text = "아쉽게도 게임은 여기까지";
             let index = 0;
@@ -846,138 +574,103 @@
                 
                 if (index >= text.length) {
                     clearInterval(typeWriter);
-                    // 1초 후 글리치 시작
-                    setTimeout(startGlitchEffect, 1000);
+                    setTimeout(startGlitchPhase, 1000);
                 }
             }, 100);
         }
 
-        function startGlitchEffect() {
+        function startGlitchPhase() {
             const typingElement = document.getElementById('typingText');
             const container = document.querySelector('.container');
             
-            // 텍스트를 빨간색으로 변경하고 글리치 효과 추가
-            typingElement.style.color = '#ff4444';
+            // 글리치 효과 시작
             typingElement.classList.add('glitching');
-            
-            // 화면 전체 흔들림 효과
             container.classList.add('screen-shake');
             
-            // 3초 후 계시 메시지 표시
-            setTimeout(showRevelation, 3000);
+            setTimeout(() => {
+                // 글리치 종료
+                typingElement.classList.remove('glitching');
+                container.classList.remove('screen-shake');
+                typingElement.style.display = 'none';
+                
+                // 3단계: 초록색 메시지 타이핑
+                startGreenMessage();
+            }, 3000);
         }
 
-        function showRevelation() {
-            const typingElement = document.getElementById('typingText');
-            const revelationElement = document.getElementById('revelationMessage');
-            const container = document.querySelector('.container');
+        function startGreenMessage() {
+            const greenHTML = '<div class="green-message" id="greenMessage"></div>';
+            document.querySelector('.typing-area').insertAdjacentHTML('beforeend', greenHTML);
             
-            // 글리치 효과 중단
-            typingElement.classList.remove('glitching');
-            container.classList.remove('screen-shake');
-            typingElement.style.display = 'none';
-            
-            // 계시 메시지 표시 (페이드인 없이 바로 표시)
-            revelationElement.style.display = 'block';
-            startBigMessageTyping();
-        }
-
-        function startBigMessageTyping() {
-            const bigMessageElement = document.getElementById('bigMessageText');
+            const greenElement = document.getElementById('greenMessage');
             const text = "아직 포기 하지마. 운명은 바꿀 수 있어.";
             let index = 0;
             
-            // 바로 보이게 하고 타이핑 시작
-            bigMessageElement.style.opacity = '1';
-            
             const typeWriter = setInterval(() => {
-                bigMessageElement.textContent = text.slice(0, index + 1);
+                greenElement.textContent = text.slice(0, index + 1);
                 index++;
                 
                 if (index >= text.length) {
                     clearInterval(typeWriter);
-                    // 1초 후 숨겨진 메시지 추출 시작
-                    setTimeout(startHiddenMessageExtraction, 1000);
+                    setTimeout(startCharacterExtraction, 1000);
                 }
             }, 80);
         }
 
-        function startHiddenMessageExtraction() {
+        function startCharacterExtraction() {
             const contentParagraphs = document.querySelectorAll('.content p');
-            const hiddenText = "아직게임은끝나지않았어";
-            const hiddenMessageContainer = document.getElementById('hiddenMessageContainer');
+            const lastParagraph = document.querySelector('.last-paragraph');
             
-            // 숨겨진 메시지 컨테이너 표시
-            hiddenMessageContainer.style.display = 'block';
-            
-            // 마지막 문단 (지금 이 시간에도~) 찾아서 페이드아웃
-            const lastParagraph = contentParagraphs[contentParagraphs.length - 1];
+            // 마지막 문단 페이드아웃
             lastParagraph.classList.add('fade-out-paragraph');
             
             let index = 0;
+            const hiddenChars = "아직게임은끝나지않았어";
+            
             const extractInterval = setInterval(() => {
-                if (index < contentParagraphs.length - 1 && index < hiddenText.length) { // 마지막 문단 제외
+                if (index < contentParagraphs.length - 1 && index < hiddenChars.length) {
                     const paragraph = contentParagraphs[index];
                     const firstChar = paragraph.textContent.charAt(0);
                     const restOfText = paragraph.textContent.slice(1);
                     
-                    // 첫 글자는 노란색으로 강조하고 남겨두기
-                    paragraph.innerHTML = `<span class="first-char-highlighted">${firstChar}</span><span class="fade-out-text">${restOfText}</span>`;
+                    // 첫 글자만 노란색으로 남기고 나머지는 페이드아웃
+                    paragraph.innerHTML = `<span class="first-char-only">${firstChar}</span><span class="fade-out-text">${restOfText}</span>`;
                     
-                    // 나머지 텍스트만 페이드아웃
                     setTimeout(() => {
                         const fadeOutSpan = paragraph.querySelector('.fade-out-text');
                         if (fadeOutSpan) {
-                            fadeOutSpan.style.opacity = '0';
+                            fadeOutSpan.classList.add('fade-out');
                         }
                     }, 100);
                     
                     index++;
                 } else {
                     clearInterval(extractInterval);
-                    // 모든 추출이 완료되면 글자들을 아래로 이동
-                    setTimeout(moveCharsToBottom, 1000);
+                    setTimeout(createFinalMessage, 1000);
                 }
             }, 500);
         }
 
-        function moveCharsToBottom() {
-            const firstChars = document.querySelectorAll('.first-char-highlighted');
-            const hiddenMessageContainer = document.getElementById('hiddenMessageContainer');
+        function createFinalMessage() {
+            // 남은 첫 글자들을 모아서 최종 메시지 생성
+            const firstChars = document.querySelectorAll('.first-char-only');
             const hiddenText = "아직게임은끝나지않았어";
+            let finalText = "";
             
-            // 이동할 글자들을 담을 컨테이너 생성
-            hiddenMessageContainer.innerHTML = '<div class="moving-chars"></div>';
-            const movingContainer = hiddenMessageContainer.querySelector('.moving-chars');
-            
-            firstChars.forEach((charElement, index) => {
+            firstChars.forEach((char, index) => {
                 if (index < hiddenText.length) {
-                    const char = charElement.textContent;
-                    
-                    // 새로운 글자 요소 생성 (아래로 이동하는 효과)
-                    const movingChar = document.createElement('span');
-                    movingChar.textContent = char;
-                    movingChar.className = 'moving-char';
-                    movingChar.style.animationDelay = `${index * 0.1}s`;
-                    movingContainer.appendChild(movingChar);
+                    finalText += char.textContent;
                 }
             });
             
-            // 완성된 메시지 스타일 적용
-            setTimeout(() => {
-                movingContainer.classList.add('completed-message');
-            }, 1500);
-        }
-
-        function goBack() {
-            // 종료 페이지에서 돌아가기 (필요시)
-            const endContainer = document.querySelector('.game-end-container');
-            if (endContainer) {
-                endContainer.remove();
-            }
+            // 최종 메시지 표시
+            const finalHTML = `<div class="final-message">${finalText}</div>`;
+            document.querySelector('.typing-area').insertAdjacentHTML('beforeend', finalHTML);
             
-            // 원래 페이지 다시 표시
-            document.querySelector('.container').style.display = 'block';
+            // 원래 첫 글자들 숨기기
+            firstChars.forEach(char => {
+                char.style.opacity = '0';
+            });
         }
 
         // 엔터키 이벤트 처리
