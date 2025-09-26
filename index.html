@@ -61,7 +61,7 @@
             padding: 1.5rem;
             border-radius: 12px;
             border: 1px solid #333;
-            transition: opacity 0.8s ease-out;
+            transition: opacity 0.8s ease-out, background 0.3s ease, border-color 0.3s ease;
         }
 
         .input-group { margin-bottom: 1.2rem; }
@@ -111,8 +111,9 @@
         }
         .final-button:active { transform: translateY(0); }
 
-        /* 애니메이션 관련 */
+        /* 애니메이션 요소 */
         .fade-out { opacity: 0 !important; }
+        .fade-out-fast { opacity: 0 !important; transition: opacity 0.7s ease; }
 
         .typing-area {
             margin-top: 2rem;
@@ -123,6 +124,7 @@
             font-size: 1.3rem; color: #e8e8e8; font-weight: 500;
             min-height: 2rem; transition: color 0.3s ease;
         }
+
         .glitching {
             color: #ff4444 !important;
             animation: textGlitch 0.1s infinite;
@@ -154,13 +156,20 @@
         .fade-out-paragraph { transition: opacity 1s ease-out; opacity: 0; }
 
         .final-message {
-            font-size: 1.2rem; font-weight: bold; color: #4CAF50; letter-spacing: 1px;
-            text-shadow: 0 0 10px #4CAF50; margin-top: 1rem; text-align: center;
+            font-size: 1.6rem; font-weight: 700; color: #4CAF50; letter-spacing: 1px;
+            text-shadow: 0 0 12px #4CAF50; text-align: center;
             animation: finalGlow 2s ease-in-out infinite;
         }
         @keyframes finalGlow {
             0%, 100% { text-shadow: 0 0 10px #4CAF50; transform: scale(1); }
             50%      { text-shadow: 0 0 20px #4CAF50, 0 0 30px #4CAF50; transform: scale(1.05); }
+        }
+
+        /* 중앙 재등장용 전체 화면 레이어 */
+        .center-stage {
+            position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+            z-index: 200; background: transparent; animation: fadeIn 0.8s ease;
+            padding: 20px;
         }
 
         /* 게임 종료 페이지 */
@@ -302,7 +311,7 @@
             document.body.insertAdjacentHTML('beforeend', endPageHTML);
         }
 
-        // ✅ 수정: inputSection 자리에 그대로 연출을 마운트
+        // 입력칸 자리에 그대로 연출 마운트 + 테두리/배경 제거
         function startEncouragementSequence() {
             const container = document.querySelector('.container');
             container.classList.add('animation-done');
@@ -319,9 +328,9 @@
                 inputSection.classList.remove('fade-out');
                 inputSection.style.opacity = '1';
 
-                // 배경을 더 투명하게 하고 싶다면 아래 한 줄 주석 해제
-                // inputSection.style.background = 'transparent';
-                // inputSection.style.borderColor = 'transparent';
+                // ✅ 요청 반영: 테두리/배경 제거
+                inputSection.style.background = 'transparent';
+                inputSection.style.borderColor = 'transparent';
 
                 inputSection.innerHTML = `
                     <div class="typing-area">
@@ -333,7 +342,6 @@
             }, 800);
         }
 
-        // ✅ 수정: 오버레이 생성 제거, 그대로 inputSection 내부에서 타이핑
         function startTypingAnimation() {
             const typingElement = document.getElementById('typingText');
             const text = "아쉽게도 게임은 여기까지";
@@ -364,7 +372,6 @@
             }, 3000);
         }
 
-        // ✅ 수정: 초록 메시지도 inputSection 내부에 추가
         function startGreenMessage() {
             const mount = document.getElementById('inputSection');
             mount.querySelector('.typing-area')
@@ -392,7 +399,6 @@
             if (lastParagraph) lastParagraph.classList.add('fade-out-paragraph');
 
             let index = 0;
-            // const hiddenChars = "아직게임은끝나지않았어"; // (생성은 createFinalMessage에서)
 
             const extractInterval = setInterval(() => {
                 if (index < contentParagraphs.length - 1) {
@@ -413,26 +419,38 @@
                     index++;
                 } else {
                     clearInterval(extractInterval);
-                    setTimeout(createFinalMessage, 1000);
+                    // ✅ 변경: 최종 문구를 하단에 붙이지 않고,
+                    // 남은 첫 글자들과 초록 글씨를 함께 지우고 → 완전 빈화면 → 중앙에 재등장
+                    setTimeout(fadeOutToBlankAndShowFinal, 1000);
                 }
             }, 500);
         }
 
-        // ✅ 수정: 최종 메시지도 inputSection 내부에 추가
-        function createFinalMessage() {
+        // ✅ 한글자 잔상 + 초록 글씨 동시 페이드아웃 → 빈화면 → 중앙 재등장
+        function fadeOutToBlankAndShowFinal() {
             const firstChars = document.querySelectorAll('.first-char-only');
-            const hiddenText = "아직게임은끝나지않았어";
-            let finalText = "";
+            const green = document.getElementById('greenMessage');
 
-            firstChars.forEach((char, index) => {
-                if (index < hiddenText.length) finalText += char.textContent;
-            });
+            firstChars.forEach(el => el.classList.add('fade-out-fast'));
+            if (green) green.classList.add('fade-out-fast');
 
-            const mount = document.getElementById('inputSection');
-            mount.querySelector('.typing-area')
-                .insertAdjacentHTML('beforeend', `<div class="final-message">${finalText}</div>`);
+            setTimeout(() => {
+                // 전부 숨겨서 "완전 빈화면" 연출
+                const content = document.querySelector('.content');
+                const inputSection = document.getElementById('inputSection');
 
-            firstChars.forEach(char => { char.style.opacity = '0'; });
+                if (content) content.style.display = 'none';
+                if (inputSection) {
+                    inputSection.innerHTML = '';
+                    inputSection.style.display = 'none';
+                }
+
+                // 중앙에 최종 메시지 재등장
+                const centerLayer = document.createElement('div');
+                centerLayer.className = 'center-stage';
+                centerLayer.innerHTML = `<div class="final-message">아직 게임은 끝나지 않았어.</div>`;
+                document.body.appendChild(centerLayer);
+            }, 750); // 페이드아웃 완료 타이밍
         }
 
         // 엔터키 포커스 이동
