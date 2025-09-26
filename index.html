@@ -1,624 +1,653 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>작가의 말 - 루시안</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>작가의 말 - 루시안</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-        body {
-            font-family: 'Noto Serif KR', serif;
-            background:#000;
-            color:#fff;
-            padding:15px;
-            min-height:100vh;
-            overflow-x:hidden;
-        }
+    body {
+      font-family:'Noto Serif KR', serif;
+      background:#000; color:#fff; padding:15px;
+      min-height:100vh; overflow-x:hidden;
+    }
 
-        .container {
-            max-width:600px; margin:0 auto; padding:30px 15px;
-            animation:fadeIn 1.5s ease-in-out forwards;
-        }
-        .container.animation-done { animation:none; }
+    .container {
+      max-width:600px; margin:0 auto; padding:30px 15px;
+      animation:fadeIn 1.5s ease-in-out forwards;
+    }
+    .container.animation-done { animation:none; }
 
-        @keyframes fadeIn {
-            from { opacity:0; transform:translateY(30px); }
-            to   { opacity:1; transform:translateY(0); }
-        }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
 
-        .title {
-            font-size:1.6rem; font-weight:600; text-align:center;
-            margin-bottom:2.5rem; color:#fff; letter-spacing:1px;
-        }
+    .title {
+      font-size:1.6rem; font-weight:600; text-align:center;
+      margin-bottom:2.5rem; color:#fff; letter-spacing:1px;
+    }
 
-        .content {
-            font-size:1rem; font-weight:400; margin-bottom:2.5rem;
-            text-align:justify; color:#e8e8e8; line-height:1.7;
-        }
-        .content p { margin-bottom:0.3rem; }
+    .content {
+      font-size:1rem; font-weight:400; margin-bottom:2.5rem;
+      text-align:justify; color:#e8e8e8; line-height:1.7;
+    }
+    .content p { margin-bottom:0.3rem; }
 
-        .author-name { color:#ccc; font-weight:500; margin-bottom:0; }
-        .section-break { margin-top:1.5rem; }
+    .author-name { color:#ccc; font-weight:500; margin-bottom:0; }
+    .section-break { margin-top:1.5rem; }
 
-        .input-section {
-            margin:2.5rem 0;
-            background:rgba(20,20,20,0.8);
-            padding:1.5rem;
-            border-radius:12px;
-            border:1px solid #333;
-            transition:opacity .8s ease-out, background .3s ease, border-color .3s ease;
-        }
+    .input-section {
+      margin:2.5rem 0; background:rgba(20,20,20,0.8);
+      padding:1.5rem; border-radius:12px; border:1px solid #333;
+      transition:opacity .8s ease-out, background .3s ease, border-color .3s ease;
+    }
 
-        .input-group { margin-bottom:1.2rem; }
-        .input-group label {
-            display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
-        }
-        .input-group input {
-            width:100%; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff;
-            font-family:'Noto Serif KR', serif; font-size:14px; transition:border-color .3s ease;
-        }
-        .input-group input:focus { outline:none; border-color:#666; background:#222; }
-        .input-group input::placeholder { color:#777; }
+    .input-group { margin-bottom:1.2rem; }
+    .input-group label {
+      display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
+    }
+    .input-group input {
+      width:100%; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff;
+      font-family:'Noto Serif KR', serif; font-size:14px; transition:border-color .3s ease;
+    }
+    .input-group input:focus { outline:none; border-color:#666; background:#222; }
+    .input-group input::placeholder { color:#777; }
 
-        .textarea-group { margin-bottom:1rem; }
-        .textarea-group label {
-            display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
-        }
-        .textarea-group textarea {
-            width:100%; min-height:120px; padding:.8rem; background:#1a1a1a;
-            border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif;
-            font-size:14px; resize:vertical; line-height:1.5; transition:border-color .3s ease;
-        }
-        .textarea-group textarea:focus { outline:none; border-color:#666; background:#222; }
-        .textarea-group textarea::placeholder { color:#777; }
+    .textarea-group { margin-bottom:1rem; }
+    .textarea-group label {
+      display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
+    }
+    .textarea-group textarea {
+      width:100%; min-height:120px; padding:.8rem; background:#1a1a1a;
+      border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif;
+      font-size:14px; resize:vertical; line-height:1.5; transition:border-color .3s ease;
+    }
+    .textarea-group textarea:focus { outline:none; border-color:#666; background:#222; }
+    .textarea-group textarea::placeholder { color:#777; }
 
-        .small-text {
-            font-size:.75rem; color:#999; text-align:center; margin-bottom:1.5rem; font-style:italic;
-        }
+    .small-text {
+      font-size:.75rem; color:#999; text-align:center; margin-bottom:1.5rem; font-style:italic;
+    }
 
-        .final-button {
-            display:block; width:100%; max-width:280px; margin:2.5rem auto 0; padding:1rem 1.5rem;
-            background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff;
-            font-family:'Noto Serif KR', serif; font-size:1rem; font-weight:500; border-radius:8px;
-            cursor:pointer; transition:all .3s ease; text-decoration:none; text-align:center;
-        }
-        .final-button:hover { background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); border-color:#666; transform:translateY(-2px); box-shadow:0 5px 15px rgba(255,255,255,.1); }
-        .final-button:active { transform:translateY(0); }
+    .final-button {
+      display:block; width:100%; max-width:280px; margin:2.5rem auto 0; padding:1rem 1.5rem;
+      background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff;
+      font-family:'Noto Serif KR', serif; font-size:1rem; font-weight:500; border-radius:8px;
+      cursor:pointer; transition:all .3s ease; text-decoration:none; text-align:center;
+    }
+    .final-button:hover { background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); border-color:#666; transform:translateY(-2px); box-shadow:0 5px 15px rgba(255,255,255,.1); }
+    .final-button:active { transform:translateY(0); }
 
-        /* 연출 공용 */
-        .fade-out { opacity:0 !important; transition:opacity .8s ease; }
-        .fade-out-fast { opacity:0 !important; transition:opacity .6s ease; }
+    /* 연출 공용 */
+    .fade-out { opacity:0 !important; transition:opacity .8s ease; }
+    .fade-out-fast { opacity:0 !important; transition:opacity .6s ease; }
 
-        .typing-area { margin-top:2rem; text-align:center; font-family:'Noto Serif KR', serif; }
-        .typing-text { font-size:1.3rem; color:#e8e8e8; font-weight:500; min-height:2rem; transition:color .3s ease; }
+    .typing-area { margin-top:2rem; text-align:center; font-family:'Noto Serif KR', serif; }
+    .typing-text { font-size:1.3rem; color:#e8e8e8; font-weight:500; min-height:2rem; transition:color .3s ease; }
 
-        .glitching {
-            color:#ff4444 !important;
-            animation:textGlitch .1s infinite;
-        }
-        @keyframes textGlitch {
-            0%   { transform:translate(0);      text-shadow:2px 0 #f00, -2px 0 #0f0; }
-            25%  { transform:translate(-1px,1px); text-shadow:-2px 0 #f00, 2px 0 #0f0; }
-            50%  { transform:translate(1px,-1px); text-shadow:2px 0 #00f, -2px 0 #f00; }
-            75%  { transform:translate(-1px,-1px); text-shadow:-2px 0 #0f0, 2px 0 #00f; }
-            100% { transform:translate(1px,1px); text-shadow:2px 0 #f00, -2px 0 #0f0; }
-        }
+    .glitching {
+      color:#ff4444 !important;
+      animation:textGlitch .1s infinite;
+    }
+    @keyframes textGlitch {
+      0%   { transform:translate(0);      text-shadow:2px 0 #f00, -2px 0 #0f0; }
+      25%  { transform:translate(-1px,1px); text-shadow:-2px 0 #f00, 2px 0 #0f0; }
+      50%  { transform:translate(1px,-1px); text-shadow:2px 0 #00f, -2px 0 #f00; }
+      75%  { transform:translate(-1px,-1px); text-shadow:-2px 0 #0f0, 2px 0 #00f; }
+      100% { transform:translate(1px,1px); text-shadow:2px 0 #f00, -2px 0 #0f0; }
+    }
 
-        .screen-shake { animation:screenShake .15s infinite; }
-        @keyframes screenShake {
-            0% { transform:translate(0,0) rotate(0deg); }
-            25% { transform:translate(2px,2px) rotate(.5deg); }
-            50% { transform:translate(-1px,1px) rotate(-.5deg); }
-            75% { transform:translate(1px,-2px) rotate(.5deg); }
-            100% { transform:translate(-2px,-1px) rotate(-.5deg); }
-        }
+    .screen-shake { animation:screenShake .15s infinite; }
+    @keyframes screenShake {
+      0% { transform:translate(0,0) rotate(0deg); }
+      25% { transform:translate(2px,2px) rotate(.5deg); }
+      50% { transform:translate(-1px,1px) rotate(-.5deg); }
+      75% { transform:translate(1px,-2px) rotate(.5deg); }
+      100% { transform:translate(-2px,-1px) rotate(-.5deg); }
+    }
 
-        .green-message { font-size:1.5rem; font-weight:600; color:#4CAF50; margin-top:2rem; line-height:1.6; text-align:center; }
+    .green-message { font-size:1.5rem; font-weight:600; color:#4CAF50; margin-top:2rem; line-height:1.6; text-align:center; }
 
-        .first-char-only { color:#ff0; font-weight:bold; font-size:1.1em; text-shadow:0 0 5px #ff0; }
-        .fade-out-text { transition:opacity 1s ease-out; }
-        .fade-out-paragraph { transition:opacity 1s ease-out; opacity:0; }
+    .first-char-only { color:#ff0; font-weight:bold; font-size:1.1em; text-shadow:0 0 5px #ff0; }
+    .fade-out-text { transition:opacity 1s ease-out; }
+    .fade-out-paragraph { transition:opacity 1s ease-out; opacity:0; }
 
-        .final-message {
-            font-size:1.6rem; font-weight:700; color:#4CAF50; letter-spacing:1px;
-            text-shadow:0 0 12px #4CAF50; text-align:center; animation:finalGlow 2s ease-in-out infinite;
-        }
-        @keyframes finalGlow {
-            0%,100% { text-shadow:0 0 10px #4CAF50; transform:scale(1); }
-            50%     { text-shadow:0 0 20px #4CAF50, 0 0 30px #4CAF50; transform:scale(1.05); }
-        }
+    .final-message {
+      font-size:1.6rem; font-weight:700; color:#4CAF50; letter-spacing:1px;
+      text-shadow:0 0 12px #4CAF50; text-align:center; animation:finalGlow 2s ease-in-out infinite;
+    }
+    @keyframes finalGlow {
+      0%,100% { text-shadow:0 0 10px #4CAF50; transform:scale(1); }
+      50%     { text-shadow:0 0 20px #4CAF50, 0 0 30px #4CAF50; transform:scale(1.05); }
+    }
 
-        /* 중앙 재등장 레이어 */
-        .center-stage {
-            position:fixed; inset:0;
-            display:flex; align-items:center; justify-content:center;
-            z-index:999; background:transparent; animation:fadeIn .8s ease;
-            padding:20px; flex-direction: column;
-        }
+    /* 중앙 재등장 레이어 */
+    .center-stage {
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      z-index:999; background:transparent; animation:fadeIn .8s ease;
+      padding:20px; flex-direction:column;
+    }
 
-        /* 응원글 표시 스타일 */
-        .cheer-display {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-            margin-top: 50px;
-        }
+    /* 응원글 표시 스타일 */
+    .cheer-display {
+      text-align:center; opacity:0; transform:translateY(20px);
+      transition:all 0.8s ease; margin-top:50px;
+    }
+    .cheer-display.show { opacity:1; transform:translateY(0); }
+    .cheer-content { font-size:1.8rem; font-weight:600; margin-bottom:15px; line-height:1.4; color:#fff; }
+    .cheer-author { font-size:1rem; color:rgba(255,255,255,0.7); font-style:italic; }
 
-        .cheer-display.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* 랜덤 응원글 표시 스타일 */
+    .random-cheer {
+      position:fixed; z-index:998; pointer-events:none;
+      opacity:0; transform:scale(0.8); transition:all 0.5s ease;
+      text-align:center; max-width:300px; padding:10px;
+    }
+    .random-cheer.show { opacity:1; transform:scale(1); }
+    .random-cheer .content { 
+      font-size:1rem; font-weight:500; color:rgba(255,255,255,0.9); 
+      margin-bottom:5px; line-height:1.3;
+    }
+    .random-cheer .author { 
+      font-size:0.8rem; color:rgba(255,255,255,0.6); 
+      font-style:italic; 
+    }
 
-        .cheer-content {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            line-height: 1.4;
-            color: #fff;
-            font-family: 'Noto Serif KR', serif;
-        }
+    /* 게임 종료 페이지 */
+    .game-end-container {
+      position:fixed; inset:0; background:#000; z-index:1000;
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .game-end-content { text-align:center; animation:fadeIn 2s ease-in-out; }
+    .end-message { color:#fff; }
+    .end-main-text { font-size:1.4rem; font-weight:500; margin-bottom:2rem; color:#e8e8e8; line-height:1.6; }
+    .end-thanks { font-size:1.1rem; font-weight:400; margin-bottom:3rem; color:#ccc; }
+    .author-signature { margin-bottom:3rem; font-style:italic; color:#aaa; font-size:1rem; }
+    .the-end { font-size:1.8rem; font-weight:600; color:#fff; letter-spacing:3px; margin-top:2rem; }
 
-        .cheer-author {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-style: italic;
-            font-family: 'Noto Serif KR', serif;
-        }
+    /* 모바일 */
+    @media (max-width:768px){
+      .content { font-size:.9rem !important; line-height:1.6 !important; }
+      .title { font-size:1.4rem; }
+      .container { padding:20px 10px; }
+      .input-section { padding:1.2rem; margin:2rem 0; }
+      .typing-text { font-size:1.1rem; }
+      .green-message { font-size:1.3rem; }
+      .end-main-text { font-size:1.2rem; }
+      .end-thanks { font-size:1rem; }
+      .cheer-content { font-size:1.4rem; }
+      .cheer-author { font-size:0.9rem; }
+    }
+    @media (max-width:480px){
+      .content { font-size:.85rem !important; line-height:1.5 !important; }
+      .title { font-size:1.3rem; letter-spacing:.5px; }
+      .input-section { padding:1rem; }
+      .typing-text { font-size:1rem; }
+      .green-message { font-size:1.2rem; }
+      .cheer-content { font-size:1.2rem; }
+      .cheer-author { font-size:0.8rem; }
+    }
 
-        /* 게임 종료 페이지 */
-        .game-end-container {
-            position:fixed; inset:0; background:#000; z-index:1000;
-            display:flex; align-items:center; justify-content:center; padding:20px;
-        }
-        .game-end-content { text-align:center; animation:fadeIn 2s ease-in-out; }
-        .end-message { color:#fff; font-family:'Noto Serif KR', serif; }
-        .end-main-text { font-size:1.4rem; font-weight:500; margin-bottom:2rem; color:#e8e8e8; line-height:1.6; }
-        .end-thanks { font-size:1.1rem; font-weight:400; margin-bottom:3rem; color:#ccc; }
-        .author-signature { margin-bottom:3rem; font-style:italic; color:#aaa; font-size:1rem; }
-        .the-end { font-size:1.8rem; font-weight:600; color:#fff; letter-spacing:3px; margin-top:2rem; }
-
-        /* 모바일 */
-        @media (max-width:768px){
-            .content { font-size:.9rem !important; line-height:1.6 !important; }
-            .title { font-size:1.4rem; }
-            .container { padding:20px 10px; }
-            .input-section { padding:1.2rem; margin:2rem 0; }
-            .typing-text { font-size:1.1rem; }
-            .green-message { font-size:1.3rem; }
-            .end-main-text { font-size:1.2rem; }
-            .end-thanks { font-size:1rem; }
-            .cheer-content { font-size: 1.4rem; }
-            .cheer-author { font-size: 0.9rem; }
-        }
-        @media (max-width:480px){
-            .content { font-size:.85rem !important; line-height:1.5 !important; }
-            .title { font-size:1.3rem; letter-spacing:.5px; }
-            .input-section { padding:1rem; }
-            .typing-text { font-size:1rem; }
-            .green-message { font-size:1.2rem; }
-            .cheer-content { font-size: 1.2rem; }
-            .cheer-author { font-size: 0.8rem; }
-        }
-
-        ::-webkit-scrollbar { width:6px; }
-        ::-webkit-scrollbar-track { background:#1a1a1a; }
-        ::-webkit-scrollbar-thumb { background:#444; border-radius:3px; }
-        ::-webkit-scrollbar-thumb:hover { background:#666; }
-    </style>
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:#1a1a1a; }
+    ::-webkit-scrollbar-thumb { background:#444; border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:#666; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">작가의 말</h1>
+  <div class="container">
+    <h1 class="title">작가의 말</h1>
 
-        <div class="content">
-            <p class="author-name">아...안녕하세요. 작가 루시안입니다. 한분 한분</p>
-            <p>직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.</p>
+    <div class="content">
+      <p class="author-name">아...안녕하세요. 작가 루시안입니다. 한분 한분</p>
+      <p>직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.</p>
 
-            <p class="section-break">게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의</p>
-            <p>임무는 어떻게 느껴지셨나요? 각자가</p>
-            <p>은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.</p>
+      <p class="section-break">게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의</p>
+      <p>임무는 어떻게 느껴지셨나요? 각자가</p>
+      <p>은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.</p>
 
-            <p class="section-break">끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.</p>
-            <p>나였어도 그렇게 생각할거에요. 운명은 정해진거라니...</p>
-            <p>지금도 전 운명은 정해져 있다고 생각해요. 그렇지</p>
-            <p>않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋</p>
-            <p>았던 순간 모두 당신의 운명이에요.</p>
-            <p>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
+      <p class="section-break">끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.</p>
+      <p>나였어도 그렇게 생각할거에요. 운명은 정해진거라니...</p>
+      <p>지금도 전 운명은 정해져 있다고 생각해요. 그렇지</p>
+      <p>않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋</p>
+      <p>았던 순간 모두 당신의 운명이에요.</p>
+      <p>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
 
-            <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
-        </div>
-
-        <div class="input-section" id="inputSection">
-            <div class="input-group">
-                <label for="nickname">닉네임</label>
-                <input type="text" id="nickname" placeholder="닉네임을 입력해주세요" maxlength="20">
-            </div>
-
-            <div class="textarea-group">
-                <label for="message">응원글</label>
-                <textarea id="message" placeholder="진심 어린 응원의 메시지를 남겨주세요..."></textarea>
-            </div>
-
-            <p class="small-text">(아직도 운명을 바꾸고 싶다면, 진심을 다해 응원글을 적어주세요.)</p>
-        </div>
-
-        <button class="final-button" id="finalButton" onclick="goToFinalPage()">마지막 페이지</button>
+      <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Firebase 설정 및 초기화
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    <div class="input-section" id="inputSection">
+      <div class="input-group">
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" placeholder="닉네임을 입력해주세요" maxlength="20">
+      </div>
 
-        // Firebase 설정 - 여기에 본인의 Firebase 프로젝트 설정을 넣으세요
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com", 
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+      <div class="textarea-group">
+        <label for="message">응원글</label>
+        <textarea id="message" placeholder="진심 어린 응원의 메시지를 남겨주세요..."></textarea>
+      </div>
+
+      <p class="small-text">(아직도 운명을 바꾸고 싶다면, 진심을 다해 응원글을 적어주세요.)</p>
+    </div>
+
+    <button class="final-button" id="finalButton" onclick="goToFinalPage()">마지막 페이지</button>
+  </div>
+
+  <!-- Firebase & Logic -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import {
+      getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCLzzo1F4H7-d-LhrbxsDzULJG86r2vKZU",
+      authDomain: "cheer-b2471.firebaseapp.com",
+      projectId: "cheer-b2471",
+      storageBucket: "cheer-b2471.firebasestorage.app",
+      messagingSenderId: "403286093961",
+      appId: "1:403286093961:web:8613cf197b75c1e3579658"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    class CheerMessageDB {
+      constructor() { this.collectionName = 'cheerMessages'; }
+
+      async saveMessage(nickname, message) {
+        const newMessage = {
+          nickname: nickname.trim() || '익명',
+          message: message.trim(),
+          timestamp: serverTimestamp(),
+          createdAt: new Date().toISOString()
         };
+        const docRef = await addDoc(collection(db, this.collectionName), newMessage);
+        return { id: docRef.id, ...newMessage };
+      }
 
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+      async getRecentMessages(count = 4) {
+        const q = query(
+          collection(db, this.collectionName),
+          orderBy('timestamp', 'desc'),
+          limit(count)
+        );
+        const snap = await getDocs(q);
+        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
 
-        // 응원글 데이터베이스 클래스 (Firebase 버전)
-        class CheerMessageDB {
-            constructor() {
-                this.collectionName = 'cheerMessages';
-            }
+      async getAllMessages() {
+        const q = query(
+          collection(db, this.collectionName),
+          orderBy('timestamp', 'desc')
+        );
+        const snap = await getDocs(q);
+        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+    }
 
-            async saveMessage(nickname, message) {
-                try {
-                    const newMessage = {
-                        nickname: nickname.trim() || '익명',
-                        message: message.trim(),
-                        timestamp: new Date(),
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    const docRef = await addDoc(collection(db, this.collectionName), newMessage);
-                    console.log("응원글이 저장되었습니다. ID:", docRef.id);
-                    return { id: docRef.id, ...newMessage };
-                } catch (error) {
-                    console.error("응원글 저장 중 오류:", error);
-                    throw error;
-                }
-            }
+    const cheerDB = new CheerMessageDB();
+    window.cheerDB = cheerDB; // (필요시 디버깅용)
 
-            async getRecentMessages(count = 4) {
-                try {
-                    const q = query(
-                        collection(db, this.collectionName),
-                        orderBy('timestamp', 'desc'),
-                        limit(count)
-                    );
-                    
-                    const querySnapshot = await getDocs(q);
-                    const messages = [];
-                    
-                    querySnapshot.forEach((doc) => {
-                        messages.push({
-                            id: doc.id,
-                            ...doc.data()
-                        });
-                    });
-                    
-                    return messages;
-                } catch (error) {
-                    console.error("응원글 불러오기 중 오류:", error);
-                    return [];
-                }
-            }
+    function isEncouragementMessage(text) {
+      const encouragementKeywords = [
+        '힘내','화이팅','응원','파이팅','굿럭','좋은','멋진','대단한','최고','잘할',
+        '할 수 있','해낼','성공','이겨','극복','버텨','포기하지','끝까지','노력',
+        '희망','믿어','꿈','목표','도전','용기','자신감','열정','긍정','밝은'
+      ];
+      return encouragementKeywords.some(k => text.includes(k)) || text.length > 10;
+    }
+
+    async function goToFinalPage() {
+      const nickname = document.getElementById('nickname').value.trim();
+      const message  = document.getElementById('message').value.trim();
+
+      if (!nickname) { alert('닉네임을 입력해주세요.'); document.getElementById('nickname').focus(); return; }
+      if (!message)  { alert('응원글을 작성해주세요.'); document.getElementById('message').focus(); return; }
+
+      const isEncouragement = isEncouragementMessage(message);
+
+      try {
+        if (isEncouragement) {
+          await cheerDB.saveMessage(nickname, message); // 저장 후 연출
+          startEncouragementSequence();
+        } else {
+          showGameEndPage();
         }
+      } catch (err) {
+        console.error('저장/분기 오류:', err);
+        isEncouragement ? startEncouragementSequence() : showGameEndPage();
+      }
+    }
+    // ⚠️ 모듈 스코프 → 클릭 가능한 전역으로 노출
+    window.goToFinalPage = goToFinalPage;
 
-        const cheerDB = new CheerMessageDB();
+    function showGameEndPage() {
+      document.querySelector('.container').style.display = 'none';
+      const endPageHTML = `
+        <div class="game-end-container">
+          <div class="game-end-content">
+            <div class="end-message">
+              <p class="end-main-text">아쉽게도 게임은 여기까지입니다.</p>
+              <p class="end-thanks">즐겨주셔서 감사드립니다!</p>
+              <div class="author-signature"><p>-작가 루시안 드림-</p></div>
+              <div class="the-end"><p>THE END.</p></div>
+            </div>
+          </div>
+        </div>`;
+      document.body.insertAdjacentHTML('beforeend', endPageHTML);
+    }
+
+    function startEncouragementSequence() {
+      const container = document.querySelector('.container');
+      container.classList.add('animation-done');
+
+      const inputSection = document.getElementById('inputSection');
+      const finalButton  = document.getElementById('finalButton');
+
+      inputSection.classList.add('fade-out');
+      finalButton.classList.add('fade-out');
+
+      setTimeout(() => {
+        finalButton.style.display = 'none';
+        inputSection.classList.remove('fade-out');
+        inputSection.style.opacity = '1';
+        inputSection.style.background = 'transparent';
+        inputSection.style.borderColor = 'transparent';
+
+        inputSection.innerHTML = `
+          <div class="typing-area">
+            <div class="typing-text" id="typingText"></div>
+          </div>`;
+        startTypingAnimation();
+      }, 800);
+    }
+
+    function startTypingAnimation() {
+      const typingElement = document.getElementById('typingText');
+      const text = "아쉽게도 게임은 여기까지";
+      let i = 0;
+      const t = setInterval(() => {
+        typingElement.textContent = text.slice(0, i + 1);
+        i++;
+        if (i >= text.length) { clearInterval(t); setTimeout(startGlitchPhase, 1000); }
+      }, 100);
+    }
+
+    function startGlitchPhase() {
+      const typingElement = document.getElementById('typingText');
+      const container = document.querySelector('.container');
+
+      typingElement.classList.add('glitching');
+      container.classList.add('screen-shake');
+
+      setTimeout(() => {
+        typingElement.classList.remove('glitching');
+        container.classList.remove('screen-shake');
+        typingElement.style.display = 'none';
+        startGreenMessage();
+      }, 3000);
+    }
+
+    function startGreenMessage() {
+      const mount = document.getElementById('inputSection');
+      mount.querySelector('.typing-area')
+        .insertAdjacentHTML('beforeend','<div class="green-message" id="greenMessage"></div>');
+
+      const greenElement = document.getElementById('greenMessage');
+      const text = "아직 포기 하지마. 운명은 바꿀 수 있어.";
+      let i = 0;
+      const t = setInterval(() => {
+        greenElement.textContent = text.slice(0, i + 1);
+        i++;
+        if (i >= text.length) { clearInterval(t); setTimeout(startCharacterExtraction, 800); }
+      }, 80);
+    }
+
+    function startCharacterExtraction() {
+      const contentParagraphs = document.querySelectorAll('.content p');
+      const lastParagraph = document.querySelector('.last-paragraph');
+      if (lastParagraph) lastParagraph.classList.add('fade-out-paragraph');
+
+      let idx = 0;
+      const step = setInterval(() => {
+        if (idx < contentParagraphs.length) {
+          const p = contentParagraphs[idx];
+          const firstChar = (p.textContent || '').charAt(0) || '';
+          const rest = (p.textContent || '').slice(1);
+
+          p.innerHTML = `
+            <span class="first-char-only">${firstChar}</span>
+            <span class="fade-out-text">${rest}</span>`;
+          setTimeout(() => {
+            const fade = p.querySelector('.fade-out-text');
+            if (fade) fade.classList.add('fade-out');
+          }, 80);
+
+          idx++;
+        } else {
+          clearInterval(step);
+          setTimeout(fadeOutToBlankAndShowFinal, 900);
+        }
+      }, 480);
+    }
+
+    function fadeOutToBlankAndShowFinal() {
+      const firstChars = document.querySelectorAll('.first-char-only');
+      const green = document.getElementById('greenMessage');
+
+      firstChars.forEach(el => el.classList.add('fade-out-fast'));
+      if (green) green.classList.add('fade-out-fast');
+
+      setTimeout(() => {
+        const title = document.querySelector('.title');
+        const content = document.querySelector('.content');
+        const inputSection = document.getElementById('inputSection');
+
+        if (title) { title.classList.add('fade-out-fast'); setTimeout(()=> title.style.display='none', 600); }
+        if (content){ content.classList.add('fade-out-fast'); setTimeout(()=> content.style.display='none',600); }
+        if (inputSection){ inputSection.classList.add('fade-out-fast'); setTimeout(()=> inputSection.style.display='none',600); }
+
+        setTimeout(() => {
+          const center = document.createElement('div');
+          center.className = 'center-stage';
+          center.innerHTML = `<div class="final-message">아직 게임은 끝나지 않았어.</div>`;
+          document.body.appendChild(center);
+
+          // 2초 후 최근 응원글 표시 시도
+          setTimeout(() => { showCheerMessages(center); }, 2000);
+        }, 650);
+      }, 620);
+    }
+
+    async function showCheerMessages(centerElement) {
+      let recentMessages = [];
+      try {
+        recentMessages = await cheerDB.getRecentMessages(4);
+      } catch (e) {
+        console.warn('응원글 불러오기 실패:', e);
+      }
+
+      const finalMessage = centerElement.querySelector('.final-message');
+
+      if (!recentMessages || recentMessages.length === 0) {
+        if (finalMessage) {
+          finalMessage.style.opacity = '0';
+          setTimeout(() => {
+            finalMessage.innerHTML = '첫 번째 응원 메시지를 남겨주세요!';
+            finalMessage.style.opacity = '1';
+          }, 500);
+        }
+        return;
+      }
+
+      if (finalMessage) finalMessage.style.opacity = '0';
+
+      setTimeout(() => {
+        if (finalMessage) finalMessage.remove();
+        showMessagesSequentially(centerElement, recentMessages, 0);
+      }, 500);
+    }
+
+    function showMessagesSequentially(container, messages, index) {
+      if (index >= messages.length) {
+        // 4개 메시지 표시 완료 후 랜덤 응원글 연출 시작
+        setTimeout(() => {
+          startRandomCheerAnimation(messages);
+        }, 1000);
+        return;
+      }
+
+      const data = messages[index] || {};
+      const text = (data.message || '').toString();
+      const nick = (data.nickname || '익명').toString();
+
+      const existingDisplay = container.querySelector('.cheer-display');
+      if (existingDisplay) {
+        existingDisplay.classList.remove('show');
+        setTimeout(() => {
+          existingDisplay.remove();
+          createAndShowMessage();
+        }, 800);
+      } else {
+        createAndShowMessage();
+      }
+
+      function createAndShowMessage() {
+        const cheerDisplay = document.createElement('div');
+        cheerDisplay.className = 'cheer-display';
+        cheerDisplay.innerHTML = `
+          <div class="cheer-content">"${text}"</div>
+          <div class="cheer-author">- ${nick} -</div>`;
+        container.appendChild(cheerDisplay);
+        setTimeout(() => { cheerDisplay.classList.add('show'); }, 100);
+        setTimeout(() => { showMessagesSequentially(container, messages, index + 1); }, 2000);
+      }
+    }
+
+    async function startRandomCheerAnimation(displayedMessages) {
+      try {
+        // 전체 응원글 가져오기
+        const allMessages = await cheerDB.getAllMessages();
         
-        // 전역으로 사용할 수 있도록 window 객체에 할당
-        window.cheerDB = cheerDB;
-
-        // 간단한 응원글 판단 함수
-        function isEncouragementMessage(text) {
-            const encouragementKeywords = [
-                '힘내', '화이팅', '응원', '파이팅', '굿럭', '좋은', '멋진', '대단한', '최고', '잘할', 
-                '할 수 있', '해낼', '성공', '이겨', '극복', '버텨', '포기하지', '끝까지', '노력',
-                '희망', '믿어', '꿈', '목표', '도전', '용기', '자신감', '열정', '긍정', '밝은'
-            ];
-            
-            return encouragementKeywords.some(keyword => text.includes(keyword)) || text.length > 10;
-        }
-
-        async function goToFinalPage() {
-            const nickname = document.getElementById('nickname').value.trim();
-            const message  = document.getElementById('message').value.trim();
-
-            if (!nickname) { alert('닉네임을 입력해주세요.'); document.getElementById('nickname').focus(); return; }
-            if (!message)  { alert('응원글을 작성해주세요.'); document.getElementById('message').focus(); return; }
-
-            // 응원글이면 Firebase에 저장
-            const isEncouragement = isEncouragementMessage(message);
-            if (isEncouragement) {
-                try {
-                    await window.cheerDB.saveMessage(nickname, message);
-                    console.log("응원글이 Firebase에 저장되었습니다!");
-                } catch (error) {
-                    console.error("응원글 저장 실패:", error);
-                    alert("응원글 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
-                    return;
-                }
-            }
-
-            try {
-                // 응원글 여부에 따라 분기
-                if (isEncouragement) startEncouragementSequence();
-                else showGameEndPage();
-            } catch (err) {
-                console.error('분석 오류:', err);
-                // 에러 시 응원글로 간주
-                if (isEncouragement) startEncouragementSequence();
-                else showGameEndPage();
-            }
-        }
-
-        function showGameEndPage() {
-            document.querySelector('.container').style.display = 'none';
-            const endPageHTML = `
-                <div class="game-end-container">
-                    <div class="game-end-content">
-                        <div class="end-message">
-                            <p class="end-main-text">아쉽게도 게임은 여기까지입니다.</p>
-                            <p class="end-thanks">즐겨주셔서 감사드립니다!</p>
-                            <div class="author-signature"><p>-작가 루시안 드림-</p></div>
-                            <div class="the-end"><p>THE END.</p></div>
-                        </div>
-                    </div>
-                </div>`;
-            document.body.insertAdjacentHTML('beforeend', endPageHTML);
-        }
-
-        // 1) 입력칸 자리에 연출 마운트 + 테두리/배경 제거
-        function startEncouragementSequence() {
-            const container = document.querySelector('.container');
-            container.classList.add('animation-done');
-
-            const inputSection = document.getElementById('inputSection');
-            const finalButton  = document.getElementById('finalButton');
-
-            inputSection.classList.add('fade-out');
-            finalButton.classList.add('fade-out');
-
-            setTimeout(() => {
-                finalButton.style.display = 'none';
-                inputSection.classList.remove('fade-out');
-                inputSection.style.opacity = '1';
-                inputSection.style.background = 'transparent';
-                inputSection.style.borderColor = 'transparent';
-
-                inputSection.innerHTML = `
-                    <div class="typing-area">
-                        <div class="typing-text" id="typingText"></div>
-                    </div>`;
-                startTypingAnimation();
-            }, 800);
-        }
-
-        // 2) "아쉽게도 게임은 여기까지" 타이핑
-        function startTypingAnimation() {
-            const typingElement = document.getElementById('typingText');
-            const text = "아쉽게도 게임은 여기까지";
-            let i = 0;
-            const t = setInterval(() => {
-                typingElement.textContent = text.slice(0, i + 1);
-                i++;
-                if (i >= text.length) { clearInterval(t); setTimeout(startGlitchPhase, 1000); }
-            }, 100);
-        }
-
-        // 3) 글리치 + 화면 흔들림
-        function startGlitchPhase() {
-            const typingElement = document.getElementById('typingText');
-            const container = document.querySelector('.container');
-
-            typingElement.classList.add('glitching');
-            container.classList.add('screen-shake');
-
-            setTimeout(() => {
-                typingElement.classList.remove('glitching');
-                container.classList.remove('screen-shake');
-                typingElement.style.display = 'none';
-                startGreenMessage();
-            }, 3000);
-        }
-
-        // 4) 초록 타이핑 (아직 포기 하지마…)
-        function startGreenMessage() {
-            const mount = document.getElementById('inputSection');
-            mount.querySelector('.typing-area')
-                .insertAdjacentHTML('beforeend','<div class="green-message" id="greenMessage"></div>');
-
-            const greenElement = document.getElementById('greenMessage');
-            const text = "아직 포기 하지마. 운명은 바꿀 수 있어.";
-            let i = 0;
-            const t = setInterval(() => {
-                greenElement.textContent = text.slice(0, i + 1);
-                i++;
-                if (i >= text.length) { clearInterval(t); setTimeout(startCharacterExtraction, 800); }
-            }, 80);
-        }
-
-        // 5) 흰 본문 각 줄: 첫 글자만 남기고 나머지 페이드
-        function startCharacterExtraction() {
-            const contentParagraphs = document.querySelectorAll('.content p');
-            const lastParagraph = document.querySelector('.last-paragraph');
-            if (lastParagraph) lastParagraph.classList.add('fade-out-paragraph');
-
-            let idx = 0;
-            const step = setInterval(() => {
-                if (idx < contentParagraphs.length) {
-                    const p = contentParagraphs[idx];
-                    // 빈 줄 대비
-                    const firstChar = (p.textContent || '').charAt(0) || '';
-                    const rest = (p.textContent || '').slice(1);
-
-                    p.innerHTML = `
-                        <span class="first-char-only">${firstChar}</span>
-                        <span class="fade-out-text">${rest}</span>`;
-                    setTimeout(() => {
-                        const fade = p.querySelector('.fade-out-text');
-                        if (fade) fade.classList.add('fade-out');
-                    }, 80);
-
-                    idx++;
-                } else {
-                    clearInterval(step);
-                    // 6) 요구사항: 초록 글씨와 남은 첫 글자들까지 모두 없어짐 → 빈 화면 → 중앙 재등장
-                    setTimeout(fadeOutToBlankAndShowFinal, 900);
-                }
-            }, 480);
-        }
-
-        // 6) 전부 사라져서 완전 빈 화면 → 중앙 레이어로 최종 문구
-        function fadeOutToBlankAndShowFinal() {
-            const firstChars = document.querySelectorAll('.first-char-only');
-            const green = document.getElementById('greenMessage');
-
-            firstChars.forEach(el => el.classList.add('fade-out-fast'));
-            if (green) green.classList.add('fade-out-fast');
-
-            setTimeout(() => {
-                // 완전 빈 화면을 위해 제목/본문/입력섹션 모두 제거
-                const title = document.querySelector('.title');
-                const content = document.querySelector('.content');
-                const inputSection = document.getElementById('inputSection');
-
-                if (title) { title.classList.add('fade-out-fast'); setTimeout(()=> title.style.display='none', 600); }
-                if (content){ content.classList.add('fade-out-fast'); setTimeout(()=> content.style.display='none',600); }
-                if (inputSection){ inputSection.classList.add('fade-out-fast'); setTimeout(()=> inputSection.style.display='none',600); }
-
-                // 약간의 블랭크 유지 후 중앙에 최종 메시지
-                setTimeout(() => {
-                    const center = document.createElement('div');
-                    center.className = 'center-stage';
-                    center.innerHTML = `<div class="final-message">아직 게임은 끝나지 않았어.</div>`;
-                    document.body.appendChild(center);
-
-                    // 2초 후 응원글 표시 시작
-                    setTimeout(() => {
-                        showCheerMessages(center);
-                    }, 2000);
-                }, 650);
-            }, 620);
-        }
-
-        async function showCheerMessages(centerElement) {
-            try {
-                const recentMessages = await window.cheerDB.getRecentMessages(4);
-                
-                if (recentMessages.length === 0) {
-                    // 저장된 메시지가 없을 경우
-                    const finalMessage = centerElement.querySelector('.final-message');
-                    finalMessage.style.opacity = '0';
-                    setTimeout(() => {
-                        finalMessage.innerHTML = '첫 번째 응원 메시지를 남겨주세요!';
-                        finalMessage.style.opacity = '1';
-                    }, 500);
-                    return;
-                }
-
-                // 기존 메시지 페이드아웃
-                const finalMessage = centerElement.querySelector('.final-message');
-                finalMessage.style.opacity = '0';
-
-                setTimeout(() => {
-                    finalMessage.remove();
-                    
-                    // 응원글들을 순차적으로 표시
-                    showMessagesSequentially(centerElement, recentMessages, 0);
-                }, 500);
-            } catch (error) {
-                console.error("응원글 불러오기 실패:", error);
-                // 에러 시 기본 메시지 표시
-                const finalMessage = centerElement.querySelector('.final-message');
-                finalMessage.style.opacity = '0';
-                setTimeout(() => {
-                    finalMessage.innerHTML = '응원글을 불러오는 중 오류가 발생했습니다.';
-                    finalMessage.style.opacity = '1';
-                }, 500);
-            }
-        }
-
-        function showMessagesSequentially(container, messages, index) {
-            if (index >= messages.length) {
-                // 모든 메시지 표시 완료 후 마무리
-                setTimeout(() => {
-                    const cheerDisplay = container.querySelector('.cheer-display');
-                    if (cheerDisplay) {
-                        cheerDisplay.classList.remove('show');
-                        setTimeout(() => {
-                            cheerDisplay.innerHTML = `
-                                <div class="cheer-content">모든 응원에 감사드립니다!</div>
-                                <div class="cheer-author">- 계속해서 응원해주세요 -</div>
-                            `;
-                            cheerDisplay.classList.add('show');
-                        }, 800);
-                    }
-                }, 2000);
-                return;
-            }
-
-            const message = messages[index];
-            
-            // 기존 메시지 제거
-            const existingDisplay = container.querySelector('.cheer-display');
-            if (existingDisplay) {
-                existingDisplay.classList.remove('show');
-                setTimeout(() => {
-                    existingDisplay.remove();
-                    createAndShowMessage();
-                }, 800);
-            } else {
-                createAndShowMessage();
-            }
-
-            function createAndShowMessage() {
-                const cheerDisplay = document.createElement('div');
-                cheerDisplay.className = 'cheer-display';
-                cheerDisplay.innerHTML = `
-                    <div class="cheer-content">"${message.message}"</div>
-                    <div class="cheer-author">- ${message.nickname} -</div>
-                `;
-                
-                container.appendChild(cheerDisplay);
-                
-                // 약간의 딜레이 후 표시
-                setTimeout(() => {
-                    cheerDisplay.classList.add('show');
-                }, 100);
-
-                // 2초 후 다음 메시지
-                setTimeout(() => {
-                    showMessagesSequentially(container, messages, index + 1);
-                }, 2000);
-            }
-        }
-
-        // UX: 엔터키로 포커스 이동
-        document.getElementById('nickname').addEventListener('keypress', e => {
-            if (e.key === 'Enter') document.getElementById('message').focus();
-        });
+        // 이미 표시된 메시지 제외
+        const displayedIds = new Set(displayedMessages.map(m => m.id));
+        const remainingMessages = allMessages.filter(m => !displayedIds.has(m.id));
         
-        // 페이지 로드 시 닉네임 필드에 포커스
-        window.addEventListener('load', () => {
-            document.getElementById('nickname').focus();
-        });
-    </script>
+        if (remainingMessages.length === 0) {
+          console.log('표시할 추가 응원글이 없습니다.');
+          return;
+        }
+        
+        // 최대 20개까지 랜덤 선택
+        const messagesToShow = remainingMessages.slice(0, 20);
+        let messageIndex = 0;
+        
+        // 500ms마다 랜덤 위치에 응원글 표시
+        const showInterval = setInterval(() => {
+          if (messageIndex >= messagesToShow.length) {
+            clearInterval(showInterval);
+            return;
+          }
+          
+          showRandomCheer(messagesToShow[messageIndex]);
+          messageIndex++;
+        }, 500);
+        
+      } catch (error) {
+        console.error('랜덤 응원글 표시 오류:', error);
+      }
+    }
+
+    function showRandomCheer(message) {
+      const randomDiv = document.createElement('div');
+      randomDiv.className = 'random-cheer';
+      
+      // 랜덤 위치 설정 (화면 가장자리 피하기)
+      const x = Math.random() * (window.innerWidth - 320) + 10;
+      const y = Math.random() * (window.innerHeight - 100) + 10;
+      
+      randomDiv.style.left = x + 'px';
+      randomDiv.style.top = y + 'px';
+      
+      randomDiv.innerHTML = `
+        <div class="content">"${message.message}"</div>
+        <div class="author">- ${message.nickname} -</div>
+      `;
+      
+      document.body.appendChild(randomDiv);
+      
+      // 등장 애니메이션
+      setTimeout(() => {
+        randomDiv.classList.add('show');
+      }, 100);
+      
+      // 1.5초 후 사라짐
+      setTimeout(() => {
+        randomDiv.classList.remove('show');
+        setTimeout(() => {
+          if (randomDiv.parentNode) {
+            randomDiv.parentNode.removeChild(randomDiv);
+          }
+        }, 500);
+      }, 1500);
+    }
+
+    // 초기 샘플 데이터 (권한/네트워크 이슈 시 무시)
+    window.addEventListener('load', async () => {
+      try {
+        const existing = await cheerDB.getAllMessages();
+        if (!existing || existing.length === 0) {
+          // 더 많은 샘플 데이터 추가 (랜덤 연출을 위해)
+          const sampleMessages = [
+            ['응원단장', '힘내세요! 항상 응원하고 있어요!'],
+            ['열정맨', '포기하지 마세요! 끝까지 화이팅!'],
+            ['희망이', '당신은 충분히 잘하고 있어요!'],
+            ['용기쌤', '어려운 시기지만 반드시 극복할 거예요!'],
+            ['긍정왕', '오늘도 좋은 하루 되세요!'],
+            ['드림캐처', '꿈을 향해 달려가세요!'],
+            ['파워업', '당신의 잠재력을 믿어요!'],
+            ['선샤인', '밝은 미래가 기다리고 있어요!'],
+            ['스트롱', '어떤 어려움도 이겨낼 수 있어요!'],
+            ['해피', '행복한 순간들이 가득하길!'],
+            ['브레이브', '용감하게 도전하세요!'],
+            ['스마일', '웃음 잃지 마세요!'],
+            ['위너', '당신은 이미 승리자예요!'],
+            ['에너지', '긍정 에너지 가득 보내드려요!'],
+            ['별빛', '어둠 속에서도 빛나는 별처럼!'],
+            ['바람', '순풍이 불어주길 바라요!'],
+            ['무지개', '비 온 뒤 무지개가 뜰 거예요!'],
+            ['나침반', '올바른 길로 인도해드릴게요!'],
+            ['봄날', '따뜻한 봄날이 올 거예요!'],
+            ['날개', '높이 날아오르세요!'],
+            ['등대', '길을 잃지 않도록 응원해요!'],
+            ['보석', '당신은 소중한 보석 같은 존재!'],
+            ['태양', '밝게 빛나는 태양처럼!'],
+            ['달빛', '고요한 밤에도 빛을 잃지 마세요!'],
+            ['하트', '진심 어린 마음으로 응원합니다!']
+          ];
+          
+          for (const [nick, msg] of sampleMessages) {
+            await cheerDB.saveMessage(nick, msg);
+            await new Promise(resolve => setTimeout(resolve, 100)); // 저장 간격
+          }
+        }
+      } catch (e) {
+        console.warn('샘플 주입 실패:', e);
+      }
+      document.getElementById('nickname').focus();
+    });
+
+    // 엔터키로 포커스 이동
+    document.getElementById('nickname').addEventListener('keypress', e => {
+      if (e.key === 'Enter') document.getElementById('message').focus();
+    });
+  </script>
 </body>
 </html>
