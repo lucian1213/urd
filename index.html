@@ -497,10 +497,21 @@
 
     function showMessagesSequentially(container, messages, index) {
       if (index >= messages.length) {
-        // 4개 메시지 표시 완료 후 랜덤 응원글 연출 시작
+        // 4개 메시지 표시 완료 후 마지막 메시지도 사라지게 하기
         setTimeout(() => {
-          startRandomCheerAnimation(messages);
-        }, 1000);
+          const lastDisplay = container.querySelector('.cheer-display');
+          if (lastDisplay) {
+            lastDisplay.classList.remove('show');
+            setTimeout(() => {
+              lastDisplay.remove();
+              // 빈 화면에서 랜덤 응원글 연출 시작
+              startRandomCheerAnimation(messages);
+            }, 800);
+          } else {
+            // 혹시 display가 없다면 바로 랜덤 연출 시작
+            startRandomCheerAnimation(messages);
+          }
+        }, 2000); // 4번째 응원글을 2초간 보여준 후 사라짐
         return;
       }
 
@@ -535,24 +546,33 @@
       try {
         // 전체 응원글 가져오기
         const allMessages = await cheerDB.getAllMessages();
+        console.log('전체 메시지 수:', allMessages.length);
         
         // 이미 표시된 메시지 제외
         const displayedIds = new Set(displayedMessages.map(m => m.id));
         const remainingMessages = allMessages.filter(m => !displayedIds.has(m.id));
+        console.log('남은 메시지 수:', remainingMessages.length);
         
         if (remainingMessages.length === 0) {
           console.log('표시할 추가 응원글이 없습니다.');
+          showCompletionMessage();
           return;
         }
         
-        // 최대 20개까지 랜덤 선택
-        const messagesToShow = remainingMessages.slice(0, 20);
+        // 최대 20개까지 선택 (남은 메시지가 20개보다 적으면 모두 사용)
+        const messagesToShow = remainingMessages.slice(0, Math.min(20, remainingMessages.length));
+        console.log('표시할 메시지 수:', messagesToShow.length);
+        
         let messageIndex = 0;
         
         // 500ms마다 랜덤 위치에 응원글 표시
         const showInterval = setInterval(() => {
           if (messageIndex >= messagesToShow.length) {
             clearInterval(showInterval);
+            // 모든 랜덤 응원글 표시 완료 후 3초 뒤 완료 메시지 표시
+            setTimeout(() => {
+              showCompletionMessage();
+            }, 3000);
             return;
           }
           
@@ -562,7 +582,15 @@
         
       } catch (error) {
         console.error('랜덤 응원글 표시 오류:', error);
+        showCompletionMessage();
       }
+    }
+
+    function showCompletionMessage() {
+      const completionDiv = document.createElement('div');
+      completionDiv.className = 'center-stage';
+      completionDiv.innerHTML = `<div class="final-message">연출이 종료되었습니다.</div>`;
+      document.body.appendChild(completionDiv);
     }
 
     function showRandomCheer(message) {
