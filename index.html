@@ -243,7 +243,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import {
-      getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp
+      getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp, getCountFromServer
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     const firebaseConfig = {
@@ -262,38 +262,59 @@
       constructor() { this.collectionName = 'cheerMessages'; }
 
       async saveMessage(nickname, message) {
-        const newMessage = {
-          nickname: nickname.trim() || '익명',
-          message: message.trim(),
-          timestamp: serverTimestamp(),
-          createdAt: new Date().toISOString()
-        };
-        const docRef = await addDoc(collection(db, this.collectionName), newMessage);
-        return { id: docRef.id, ...newMessage };
+        try {
+          const newMessage = {
+            nickname: nickname.trim() || '익명',
+            message: message.trim(),
+            timestamp: serverTimestamp(),
+            createdAt: new Date().toISOString()
+          };
+          const docRef = await addDoc(collection(db, this.collectionName), newMessage);
+          console.log('[save] ok:', docRef.id);
+          return { id: docRef.id, ...newMessage };
+        } catch (err) {
+          console.error('[save] fail:', err);
+          throw err;
+        }
       }
 
       async getRecentMessages(count = 4) {
-        const q = query(
+        const qy = query(
           collection(db, this.collectionName),
           orderBy('timestamp', 'desc'),
           limit(count)
         );
-        const snap = await getDocs(q);
+        const snap = await getDocs(qy);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
 
       async getAllMessages() {
-        const q = query(
+        const qy = query(
           collection(db, this.collectionName),
           orderBy('timestamp', 'desc')
         );
-        const snap = await getDocs(q);
+        const snap = await getDocs(qy);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+
+      // ✅ 총 개수 카운트 (정렬/필드 의존 X)
+      async countAll() {
+        const col = collection(db, this.collectionName);
+        const snap = await getCountFromServer(query(col));
+        return snap.data().count || 0;
+      }
+
+      // ✅ 샘플 일괄 주입(필요 수만큼)
+      async seedSamples(samples) {
+        for (const [nick, msg] of samples) {
+          await this.saveMessage(nick, msg);
+          await new Promise(r => setTimeout(r, 60)); // 살짝 딜레이
+        }
       }
     }
 
     const cheerDB = new CheerMessageDB();
-    window.cheerDB = cheerDB; // (필요시 디버깅용)
+    window.cheerDB = cheerDB; // (디버깅용)
 
     function isEncouragementMessage(text) {
       const encouragementKeywords = [
@@ -325,7 +346,7 @@
         isEncouragement ? startEncouragementSequence() : showGameEndPage();
       }
     }
-    // ⚠️ 모듈 스코프 → 클릭 가능한 전역으로 노출
+    // 모듈 스코프 → 전역으로 노출
     window.goToFinalPage = goToFinalPage;
 
     function showGameEndPage() {
@@ -627,12 +648,13 @@
       }, 1500);
     }
 
-    // 초기 샘플 데이터 (권한/네트워크 이슈 시 무시)
+    // ✅ 초기 샘플 데이터: 최소 개수 보장(예: 24개)
     window.addEventListener('load', async () => {
       try {
-        const existing = await cheerDB.getAllMessages();
-        if (!existing || existing.length === 0) {
-          // 더 많은 샘플 데이터 추가 (랜덤 연출을 위해)
+        const MIN = 24;                 // 원하는 최소 개수
+        const cur = await cheerDB.countAll();
+        if (cur < MIN) {
+          const needed = MIN - cur;
           const sampleMessages = [
             ['응원단장', '힘내세요! 항상 응원하고 있어요!'],
             ['열정맨', '포기하지 마세요! 끝까지 화이팅!'],
@@ -660,14 +682,13 @@
             ['달빛', '고요한 밤에도 빛을 잃지 마세요!'],
             ['하트', '진심 어린 마음으로 응원합니다!']
           ];
-          
-          for (const [nick, msg] of sampleMessages) {
-            await cheerDB.saveMessage(nick, msg);
-            await new Promise(resolve => setTimeout(resolve, 100)); // 저장 간격
-          }
+          await cheerDB.seedSamples(sampleMessages.slice(0, needed));
+          console.log(`[seed] 샘플 ${needed}개 주입 (총 ${MIN}개 보장)`);
+        } else {
+          console.log(`[seed] 현재 ${cur}개 있어 주입 생략`);
         }
       } catch (e) {
-        console.warn('샘플 주입 실패:', e);
+        console.warn('[seed] 실패:', e);
       }
       document.getElementById('nickname').focus();
     });
