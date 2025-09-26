@@ -10,76 +10,38 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
 
-    body {
-      font-family:'Noto Serif KR', serif;
-      background:#000; color:#fff; padding:15px;
-      min-height:100vh; overflow-x:hidden;
-    }
+    body { font-family:'Noto Serif KR', serif; background:#000; color:#fff; padding:15px; min-height:100vh; overflow-x:hidden; }
 
-    .container {
-      max-width:600px; margin:0 auto; padding:30px 15px;
-      animation:fadeIn 1.5s ease-in-out forwards;
-    }
+    .container { max-width:600px; margin:0 auto; padding:30px 15px; animation:fadeIn 1.5s ease-in-out forwards; }
     .container.animation-done { animation:none; }
 
-    @keyframes fadeIn {
-      from { opacity:0; transform:translateY(30px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
 
-    .title {
-      font-size:1.6rem; font-weight:600; text-align:center;
-      margin-bottom:2.5rem; color:#fff; letter-spacing:1px;
-    }
+    .title { font-size:1.6rem; font-weight:600; text-align:center; margin-bottom:2.5rem; color:#fff; letter-spacing:1px; }
 
-    .content {
-      font-size:1rem; font-weight:400; margin-bottom:2.5rem;
-      text-align:justify; color:#e8e8e8; line-height:1.7;
-    }
+    .content { font-size:1rem; font-weight:400; margin-bottom:2.5rem; text-align:justify; color:#e8e8e8; line-height:1.7; }
     .content p { margin-bottom:0.3rem; }
 
     .author-name { color:#ccc; font-weight:500; margin-bottom:0; }
     .section-break { margin-top:1.5rem; }
 
-    .input-section {
-      margin:2.5rem 0; background:rgba(20,20,20,0.8);
-      padding:1.5rem; border-radius:12px; border:1px solid #333;
-      transition:opacity .8s ease-out, background .3s ease, border-color .3s ease;
-    }
+    .input-section { margin:2.5rem 0; background:rgba(20,20,20,0.8); padding:1.5rem; border-radius:12px; border:1px solid #333; transition:opacity .8s ease-out, background .3s ease, border-color .3s ease; }
 
     .input-group { margin-bottom:1.2rem; }
-    .input-group label {
-      display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
-    }
-    .input-group input {
-      width:100%; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff;
-      font-family:'Noto Serif KR', serif; font-size:14px; transition:border-color .3s ease;
-    }
+    .input-group label { display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff; }
+    .input-group input { width:100%; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff; font-size:14px; transition:border-color .3s ease; }
     .input-group input:focus { outline:none; border-color:#666; background:#222; }
     .input-group input::placeholder { color:#777; }
 
     .textarea-group { margin-bottom:1rem; }
-    .textarea-group label {
-      display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
-    }
-    .textarea-group textarea {
-      width:100%; min-height:120px; padding:.8rem; background:#1a1a1a;
-      border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif;
-      font-size:14px; resize:vertical; line-height:1.5; transition:border-color .3s ease;
-    }
+    .textarea-group label { display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff; }
+    .textarea-group textarea { width:100%; min-height:120px; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff; font-size:14px; resize:vertical; line-height:1.5; transition:border-color .3s ease; }
     .textarea-group textarea:focus { outline:none; border-color:#666; background:#222; }
     .textarea-group textarea::placeholder { color:#777; }
 
-    .small-text {
-      font-size:.75rem; color:#999; text-align:center; margin-bottom:1.5rem; font-style:italic;
-    }
+    .small-text { font-size:.75rem; color:#999; text-align:center; margin-bottom:1.5rem; font-style:italic; }
 
-    .final-button {
-      display:block; width:100%; max-width:280px; margin:2.5rem auto 0; padding:1rem 1.5rem;
-      background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff;
-      font-family:'Noto Serif KR', serif; font-size:1rem; font-weight:500; border-radius:8px;
-      cursor:pointer; transition:all .3s ease; text-decoration:none; text-align:center;
-    }
+    .final-button { display:block; width:100%; max-width:280px; margin:2.5rem auto 0; padding:1rem 1.5rem; background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff; font-size:1rem; font-weight:500; border-radius:8px; cursor:pointer; transition:all .3s ease; text-align:center; }
     .final-button:hover { background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); border-color:#666; transform:translateY(-2px); box-shadow:0 5px 15px rgba(255,255,255,.1); }
     .final-button:active { transform:translateY(0); }
 
@@ -87,19 +49,16 @@
     .fade-out { opacity:0 !important; transition:opacity .8s ease; }
     .fade-out-fast { opacity:0 !important; transition:opacity .6s ease; }
 
-    .typing-area { margin-top:2rem; text-align:center; font-family:'Noto Serif KR', serif; }
+    .typing-area { margin-top:2rem; text-align:center; }
     .typing-text { font-size:1.3rem; color:#e8e8e8; font-weight:500; min-height:2rem; transition:color .3s ease; }
 
-    .glitching {
-      color:#ff4444 !important;
-      animation:textGlitch .1s infinite;
-    }
+    .glitching { color:#ff4444 !important; animation:textGlitch .1s infinite; }
     @keyframes textGlitch {
-      0%   { transform:translate(0);      text-shadow:2px 0 #f00, -2px 0 #0f0; }
-      25%  { transform:translate(-1px,1px); text-shadow:-2px 0 #f00, 2px 0 #0f0; }
-      50%  { transform:translate(1px,-1px); text-shadow:2px 0 #00f, -2px 0 #f00; }
-      75%  { transform:translate(-1px,-1px); text-shadow:-2px 0 #0f0, 2px 0 #00f; }
-      100% { transform:translate(1px,1px); text-shadow:2px 0 #f00, -2px 0 #0f0; }
+      0% { transform:translate(0); text-shadow:2px 0 #f00,-2px 0 #0f0; }
+      25% { transform:translate(-1px,1px); text-shadow:-2px 0 #f00,2px 0 #0f0; }
+      50% { transform:translate(1px,-1px); text-shadow:2px 0 #00f,-2px 0 #f00; }
+      75% { transform:translate(-1px,-1px); text-shadow:-2px 0 #0f0,2px 0 #00f; }
+      100% { transform:translate(1px,1px); text-shadow:2px 0 #f00,-2px 0 #0f0; }
     }
 
     .screen-shake { animation:screenShake .15s infinite; }
@@ -117,37 +76,33 @@
     .fade-out-text { transition:opacity 1s ease-out; }
     .fade-out-paragraph { transition:opacity 1s ease-out; opacity:0; }
 
-    .final-message {
-      font-size:1.6rem; font-weight:700; color:#4CAF50; letter-spacing:1px;
-      text-shadow:0 0 12px #4CAF50; text-align:center; animation:finalGlow 2s ease-in-out infinite;
-    }
-    @keyframes finalGlow {
-      0%,100% { text-shadow:0 0 10px #4CAF50; transform:scale(1); }
-      50%     { text-shadow:0 0 20px #4CAF50, 0 0 30px #4CAF50; transform:scale(1.05); }
-    }
+    .final-message { font-size:1.6rem; font-weight:700; color:#4CAF50; letter-spacing:1px; text-shadow:0 0 12px #4CAF50; text-align:center; animation:finalGlow 2s ease-in-out infinite; }
+    @keyframes finalGlow { 0%,100% { text-shadow:0 0 10px #4CAF50; transform:scale(1); } 50% { text-shadow:0 0 20px #4CAF50,0 0 30px #4CAF50; transform:scale(1.05); } }
 
     /* 중앙 재등장 레이어 */
-    .center-stage {
-      position:fixed; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      z-index:999; background:transparent; animation:fadeIn .8s ease;
-      padding:20px; flex-direction:column;
-    }
+    .center-stage { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:999; background:transparent; animation:fadeIn .8s ease; padding:20px; flex-direction:column; }
 
-    /* 응원글 표시 스타일 */
-    .cheer-display {
-      text-align:center; opacity:0; transform:translateY(20px);
-      transition:all 0.8s ease; margin-top:50px;
+    /* 4개 고정 표시 그리드 */
+    .cheer-grid { display:grid; grid-template-columns:1fr; gap:12px; width:100%; max-width:640px; margin-top:24px; }
+    @media (min-width:560px){ .cheer-grid { grid-template-columns:1fr 1fr; } }
+
+    .cheer-card { background:rgba(255,255,255,0.04); border:1px solid #2a2a2a; border-radius:10px; padding:14px 16px; }
+    .cheer-card .cheer-content { font-size:1.1rem; color:#eaeaea; margin-bottom:8px; line-height:1.4; }
+    .cheer-card .cheer-author  { font-size:0.9rem; color:rgba(255,255,255,0.6); font-style:italic; text-align:right; }
+
+    /* 랜덤 버스트 메시지 */
+    .ephemeral-cheer {
+      position:fixed; z-index:1200; pointer-events:none;
+      opacity:0; transform:translate(-50%,-50%) scale(0.9);
+      transition:opacity .25s ease, transform .25s ease;
+      color:rgba(255,255,255,0.92); font-weight:700; text-shadow:0 0 8px rgba(76,175,80,0.45);
+      will-change:transform, opacity;
     }
-    .cheer-display.show { opacity:1; transform:translateY(0); }
-    .cheer-content { font-size:1.8rem; font-weight:600; margin-bottom:15px; line-height:1.4; color:#fff; }
-    .cheer-author { font-size:1rem; color:rgba(255,255,255,0.7); font-style:italic; }
+    .ephemeral-cheer.show { opacity:1; transform:translate(-50%,-50%) scale(1); }
+    .ephemeral-cheer.fade { opacity:0; transform:translate(-50%,-50%) scale(0.85); }
 
     /* 게임 종료 페이지 */
-    .game-end-container {
-      position:fixed; inset:0; background:#000; z-index:1000;
-      display:flex; align-items:center; justify-content:center; padding:20px;
-    }
+    .game-end-container { position:fixed; inset:0; background:#000; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; }
     .game-end-content { text-align:center; animation:fadeIn 2s ease-in-out; }
     .end-message { color:#fff; }
     .end-main-text { font-size:1.4rem; font-weight:500; margin-bottom:2rem; color:#e8e8e8; line-height:1.6; }
@@ -165,8 +120,8 @@
       .green-message { font-size:1.3rem; }
       .end-main-text { font-size:1.2rem; }
       .end-thanks { font-size:1rem; }
-      .cheer-content { font-size:1.4rem; }
-      .cheer-author { font-size:0.9rem; }
+      .cheer-card .cheer-content { font-size:1rem; }
+      .cheer-card .cheer-author { font-size:0.85rem; }
     }
     @media (max-width:480px){
       .content { font-size:.85rem !important; line-height:1.5 !important; }
@@ -174,8 +129,8 @@
       .input-section { padding:1rem; }
       .typing-text { font-size:1rem; }
       .green-message { font-size:1.2rem; }
-      .cheer-content { font-size:1.2rem; }
-      .cheer-author { font-size:0.8rem; }
+      .cheer-card .cheer-content { font-size:0.95rem; }
+      .cheer-card .cheer-author { font-size:0.8rem; }
     }
 
     ::-webkit-scrollbar { width:6px; }
@@ -257,27 +212,20 @@
       }
 
       async getRecentMessages(count = 4) {
-        const q = query(
-          collection(db, this.collectionName),
-          orderBy('timestamp', 'desc'),
-          limit(count)
-        );
+        const q = query(collection(db, this.collectionName), orderBy('timestamp', 'desc'), limit(count));
         const snap = await getDocs(q);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
 
       async getAllMessages() {
-        const q = query(
-          collection(db, this.collectionName),
-          orderBy('timestamp', 'desc')
-        );
+        const q = query(collection(db, this.collectionName), orderBy('timestamp', 'desc'));
         const snap = await getDocs(q);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
     }
 
     const cheerDB = new CheerMessageDB();
-    window.cheerDB = cheerDB; // (필요시 디버깅용)
+    window.cheerDB = cheerDB; // 디버깅용
 
     function isEncouragementMessage(text) {
       const encouragementKeywords = [
@@ -309,7 +257,7 @@
         isEncouragement ? startEncouragementSequence() : showGameEndPage();
       }
     }
-    // ⚠️ 모듈 스코프 → 클릭 가능한 전역으로 노출
+    // 모듈 스코프 → 전역으로 노출
     window.goToFinalPage = goToFinalPage;
 
     function showGameEndPage() {
@@ -444,23 +392,21 @@
           center.innerHTML = `<div class="final-message">아직 게임은 끝나지 않았어.</div>`;
           document.body.appendChild(center);
 
-          // 2초 후 최근 응원글 표시 시도
+          // 2초 후 최근 4개 + 버스트 시작
           setTimeout(() => { showCheerMessages(center); }, 2000);
         }, 650);
       }, 620);
     }
 
+    /** 최근 4개 그리드 표시 + 남은 메시지 20개 랜덤 버스트 */
     async function showCheerMessages(centerElement) {
-      let recentMessages = [];
-      try {
-        recentMessages = await cheerDB.getRecentMessages(4);
-      } catch (e) {
-        console.warn('응원글 불러오기 실패:', e);
-      }
+      // 전체 메시지 조회
+      let all = [];
+      try { all = await cheerDB.getAllMessages(); } catch(e){ console.warn('응원글 불러오기 실패:', e); }
 
-      const finalMessage = centerElement.querySelector('.final-message');
-
-      if (!recentMessages || recentMessages.length === 0) {
+      // 없으면 안내 문구 (샘플은 로드 시 주입됨)
+      if (!all || all.length === 0) {
+        const finalMessage = centerElement.querySelector('.final-message');
         if (finalMessage) {
           finalMessage.style.opacity = '0';
           setTimeout(() => {
@@ -471,59 +417,93 @@
         return;
       }
 
-      if (finalMessage) finalMessage.style.opacity = '0';
+      // 최근 4개
+      const featured = all.slice(0, 4);
+      const featuredIds = new Set(featured.map(m => m.id));
 
-      setTimeout(() => {
-        if (finalMessage) finalMessage.remove();
-        showMessagesSequentially(centerElement, recentMessages, 0);
-      }, 500);
-    }
-
-    function showMessagesSequentially(container, messages, index) {
-      if (index >= messages.length) {
-        setTimeout(() => {
-          const cheerDisplay = container.querySelector('.cheer-display');
-          if (cheerDisplay) {
-            cheerDisplay.classList.remove('show');
-            setTimeout(() => {
-              cheerDisplay.innerHTML = `
-                <div class="cheer-content">모든 응원에 감사드립니다!</div>
-                <div class="cheer-author">- 계속해서 응원해주세요 -</div>`;
-              cheerDisplay.classList.add('show');
-            }, 800);
-          }
-        }, 2000);
-        return;
-      }
-
-      const data = messages[index] || {};
-      const text = (data.message || '').toString();
-      const nick = (data.nickname || '익명').toString();
-
-      const existingDisplay = container.querySelector('.cheer-display');
-      if (existingDisplay) {
-        existingDisplay.classList.remove('show');
-        setTimeout(() => {
-          existingDisplay.remove();
-          createAndShowMessage();
-        }, 800);
-      } else {
-        createAndShowMessage();
-      }
-
-      function createAndShowMessage() {
-        const cheerDisplay = document.createElement('div');
-        cheerDisplay.className = 'cheer-display';
-        cheerDisplay.innerHTML = `
+      // 그리드 생성 및 표시
+      const grid = document.createElement('div');
+      grid.className = 'cheer-grid';
+      featured.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'cheer-card';
+        const text = (item.message || '').toString();
+        const nick = (item.nickname || '익명').toString();
+        card.innerHTML = `
           <div class="cheer-content">"${text}"</div>
           <div class="cheer-author">- ${nick} -</div>`;
-        container.appendChild(cheerDisplay);
-        setTimeout(() => { cheerDisplay.classList.add('show'); }, 100);
-        setTimeout(() => { showMessagesSequentially(container, messages, index + 1); }, 2000);
-      }
+        grid.appendChild(card);
+      });
+      centerElement.appendChild(grid);
+
+      // 버스트 풀(최근 4개 제외)
+      const pool = all.filter(m => !featuredIds.has(m.id));
+      if (pool.length === 0) return;
+
+      // 20개 랜덤 추출 (중복 없이)
+      const count = Math.min(20, pool.length);
+      const picks = pickRandomUnique(pool, count);
+
+      // 0~6000ms 사이 랜덤 지연으로 빠르게 등장/퇴장
+      picks.forEach((msg, i) => {
+        const delay = randInt(0, 6000);
+        spawnEphemeral(msg, delay);
+      });
     }
 
-    // 초기 샘플 데이터 (권한/네트워크 이슈 시 무시)
+    /** 화면 곳곳에 작은 텍스트로 빠르게 등장/사라짐 */
+    function spawnEphemeral(msg, delayMs) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'ephemeral-cheer';
+
+        const fontMin = 0.78, fontMax = 1.05; // rem
+        const font = (Math.random() * (fontMax - fontMin) + fontMin).toFixed(2);
+
+        const rot = randInt(-12, 12); // 회전
+        const vw = window.innerWidth, vh = window.innerHeight;
+
+        // 화면 가장자리 피해서 배치 (5%~95% / 10%~90%)
+        const leftPct = randInt(5, 95);
+        const topPct  = randInt(10, 90);
+
+        el.style.left = `${leftPct}vw`;
+        el.style.top  = `${topPct}vh`;
+        el.style.fontSize = `${font}rem`;
+        el.style.transform = `translate(-50%,-50%) rotate(${rot}deg) scale(0.9)`;
+
+        const text = (msg.message || '').toString();
+        const nick = (msg.nickname || '익명').toString();
+        el.textContent = `"${text}" - ${nick}`;
+
+        document.body.appendChild(el);
+
+        // 등장
+        requestAnimationFrame(() => {
+          el.classList.add('show');
+        });
+
+        // 900~1400ms 후 퇴장
+        const life = randInt(900, 1400);
+        setTimeout(() => {
+          el.classList.add('fade');
+          setTimeout(() => el.remove(), 300);
+        }, life);
+      }, delayMs);
+    }
+
+    /* 유틸 */
+    function pickRandomUnique(arr, n) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0, n);
+    }
+    function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    // 초기 샘플 데이터 (처음엔 비어 있을 수 있으니 주입)
     window.addEventListener('load', async () => {
       try {
         const existing = await cheerDB.getAllMessages();
@@ -532,6 +512,13 @@
           await cheerDB.saveMessage('열정맨', '포기하지 마세요! 끝까지 화이팅!');
           await cheerDB.saveMessage('희망이', '당신은 충분히 잘하고 있어요!');
           await cheerDB.saveMessage('용기쌤', '어려운 시기지만 반드시 극복할 거예요!');
+          await cheerDB.saveMessage('빛나는별', '오늘도 한 걸음, 그게 충분해요.');
+          await cheerDB.saveMessage('브레이버', '두려움보다 용기가 조금만 더 크면 돼요!');
+          await cheerDB.saveMessage('스마일', '당신의 웃음이 모두를 밝게 해요 :)');
+          await cheerDB.saveMessage('러너', '멈추지 않는 한 우리는 도착할 거예요.');
+          await cheerDB.saveMessage('드리머', '꿈꾸는 순간, 이미 반은 이룬 거예요.');
+          await cheerDB.saveMessage('서포터', '작은 응원도 큰 힘이 됩니다!');
+          // 더 필요하면 자유롭게 추가 가능
         }
       } catch (e) {
         console.warn('샘플 주입 실패:', e);
