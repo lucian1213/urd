@@ -362,6 +362,7 @@
             margin-bottom: 2rem;
             line-height: 1.6;
             min-height: 2rem;
+            opacity: 1; /* 바로 보이게 */
         }
 
         .hidden-message-container {
@@ -369,15 +370,20 @@
             min-height: 3rem;
         }
 
-        .first-char-only {
+        .first-char-highlighted {
             color: #ffff00;
             font-weight: bold;
             font-size: 1.1em;
             text-shadow: 0 0 5px #ffff00;
+            /* 첫 글자는 그대로 남아있음 */
         }
 
         .fade-out-text {
             transition: opacity 1s ease-out;
+        }
+
+        .fade-out-paragraph {
+            animation: fadeOut 1s ease-out forwards;
         }
 
         .moving-chars {
@@ -390,12 +396,13 @@
 
         .moving-char {
             display: inline-block;
-            animation: charMove 0.8s ease-out;
+            animation: charMoveDown 1s ease-out forwards;
+            opacity: 0;
         }
 
-        @keyframes charMove {
+        @keyframes charMoveDown {
             0% {
-                transform: translateY(-50px);
+                transform: translateY(-100px);
                 opacity: 0;
             }
             50% {
@@ -870,7 +877,7 @@
             container.classList.remove('screen-shake');
             typingElement.style.display = 'none';
             
-            // 계시 메시지 표시 및 타이핑 효과
+            // 계시 메시지 표시 (페이드인 없이 바로 표시)
             revelationElement.style.display = 'block';
             startBigMessageTyping();
         }
@@ -879,6 +886,9 @@
             const bigMessageElement = document.getElementById('bigMessageText');
             const text = "아직 포기 하지마. 운명은 바꿀 수 있어.";
             let index = 0;
+            
+            // 바로 보이게 하고 타이핑 시작
+            bigMessageElement.style.opacity = '1';
             
             const typeWriter = setInterval(() => {
                 bigMessageElement.textContent = text.slice(0, index + 1);
@@ -900,17 +910,21 @@
             // 숨겨진 메시지 컨테이너 표시
             hiddenMessageContainer.style.display = 'block';
             
+            // 마지막 문단 (지금 이 시간에도~) 찾아서 페이드아웃
+            const lastParagraph = contentParagraphs[contentParagraphs.length - 1];
+            lastParagraph.classList.add('fade-out-paragraph');
+            
             let index = 0;
             const extractInterval = setInterval(() => {
-                if (index < contentParagraphs.length && index < hiddenText.length) {
+                if (index < contentParagraphs.length - 1 && index < hiddenText.length) { // 마지막 문단 제외
                     const paragraph = contentParagraphs[index];
                     const firstChar = paragraph.textContent.charAt(0);
                     const restOfText = paragraph.textContent.slice(1);
                     
-                    // 첫 글자만 남기고 나머지는 페이드아웃
-                    paragraph.innerHTML = `<span class="first-char-only">${firstChar}</span><span class="fade-out-text">${restOfText}</span>`;
+                    // 첫 글자는 노란색으로 강조하고 남겨두기
+                    paragraph.innerHTML = `<span class="first-char-highlighted">${firstChar}</span><span class="fade-out-text">${restOfText}</span>`;
                     
-                    // 나머지 텍스트를 페이드아웃
+                    // 나머지 텍스트만 페이드아웃
                     setTimeout(() => {
                         const fadeOutSpan = paragraph.querySelector('.fade-out-text');
                         if (fadeOutSpan) {
@@ -928,7 +942,7 @@
         }
 
         function moveCharsToBottom() {
-            const firstChars = document.querySelectorAll('.first-char-only');
+            const firstChars = document.querySelectorAll('.first-char-highlighted');
             const hiddenMessageContainer = document.getElementById('hiddenMessageContainer');
             const hiddenText = "아직게임은끝나지않았어";
             
@@ -940,16 +954,12 @@
                 if (index < hiddenText.length) {
                     const char = charElement.textContent;
                     
-                    // 새로운 글자 요소 생성
+                    // 새로운 글자 요소 생성 (아래로 이동하는 효과)
                     const movingChar = document.createElement('span');
                     movingChar.textContent = char;
                     movingChar.className = 'moving-char';
+                    movingChar.style.animationDelay = `${index * 0.1}s`;
                     movingContainer.appendChild(movingChar);
-                    
-                    // 원래 글자는 투명하게
-                    setTimeout(() => {
-                        charElement.style.opacity = '0';
-                    }, index * 100);
                 }
             });
             
