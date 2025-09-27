@@ -159,17 +159,50 @@
       font-style:italic; 
     }
 
-    /* 게임 종료 페이지 */
-    .game-end-container {
+    /* 완료 메시지 스타일 */
+    .completion-container {
       position:fixed; inset:0; background:#000; z-index:1000;
       display:flex; align-items:center; justify-content:center; padding:20px;
+      animation:fadeIn 1s ease;
     }
-    .game-end-content { text-align:center; animation:fadeIn 2s ease-in-out; }
-    .end-message { color:#fff; }
-    .end-main-text { font-size:1.4rem; font-weight:500; margin-bottom:2rem; color:#e8e8e8; line-height:1.6; }
-    .end-thanks { font-size:1.1rem; font-weight:400; margin-bottom:3rem; color:#ccc; }
-    .author-signature { margin-bottom:3rem; font-style:italic; color:#aaa; font-size:1rem; }
-    .the-end { font-size:1.8rem; font-weight:600; color:#fff; letter-spacing:3px; margin-top:2rem; }
+    .completion-content { 
+      text-align:left; max-width:600px; color:#fff; 
+      font-family:'Noto Serif KR', serif; line-height:1.6;
+    }
+    .completion-text { 
+      font-size:1rem; margin-bottom:3rem; 
+    }
+    .completion-text p { 
+      margin-bottom:0.5rem; 
+    }
+    .card-input-section {
+      text-align:center; margin-top:2rem; 
+      padding:2rem; background:rgba(20,20,20,0.8); 
+      border-radius:12px; border:1px solid #333;
+    }
+    .input-instruction {
+      font-size:1.1rem; margin-bottom:1rem; color:#fff; font-weight:500;
+    }
+    .card-input-section input {
+      width:200px; padding:0.8rem; background:#1a1a1a; 
+      border:2px solid #333; border-radius:6px; color:#fff;
+      font-family:'Noto Serif KR', serif; font-size:14px; 
+      text-align:center; margin-bottom:1rem;
+    }
+    .card-input-section input:focus { 
+      outline:none; border-color:#666; background:#222; 
+    }
+    .card-input-section button {
+      display:block; margin:1rem auto 0; padding:0.8rem 2rem;
+      background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); 
+      border:2px solid #444; color:#fff; font-family:'Noto Serif KR', serif; 
+      font-size:1rem; border-radius:8px; cursor:pointer; 
+      transition:all .3s ease;
+    }
+    .card-input-section button:hover { 
+      background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); 
+      border-color:#666; transform:translateY(-2px); 
+    }
 
     /* 모바일 */
     @media (max-width:768px){
@@ -243,7 +276,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import {
-      getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp, getCountFromServer
+      getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     const firebaseConfig = {
@@ -262,59 +295,38 @@
       constructor() { this.collectionName = 'cheerMessages'; }
 
       async saveMessage(nickname, message) {
-        try {
-          const newMessage = {
-            nickname: nickname.trim() || '익명',
-            message: message.trim(),
-            timestamp: serverTimestamp(),
-            createdAt: new Date().toISOString()
-          };
-          const docRef = await addDoc(collection(db, this.collectionName), newMessage);
-          console.log('[save] ok:', docRef.id);
-          return { id: docRef.id, ...newMessage };
-        } catch (err) {
-          console.error('[save] fail:', err);
-          throw err;
-        }
+        const newMessage = {
+          nickname: nickname.trim() || '익명',
+          message: message.trim(),
+          timestamp: serverTimestamp(),
+          createdAt: new Date().toISOString()
+        };
+        const docRef = await addDoc(collection(db, this.collectionName), newMessage);
+        return { id: docRef.id, ...newMessage };
       }
 
       async getRecentMessages(count = 4) {
-        const qy = query(
+        const q = query(
           collection(db, this.collectionName),
           orderBy('timestamp', 'desc'),
           limit(count)
         );
-        const snap = await getDocs(qy);
+        const snap = await getDocs(q);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
 
       async getAllMessages() {
-        const qy = query(
+        const q = query(
           collection(db, this.collectionName),
           orderBy('timestamp', 'desc')
         );
-        const snap = await getDocs(qy);
+        const snap = await getDocs(q);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      }
-
-      // ✅ 총 개수 카운트 (정렬/필드 의존 X)
-      async countAll() {
-        const col = collection(db, this.collectionName);
-        const snap = await getCountFromServer(query(col));
-        return snap.data().count || 0;
-      }
-
-      // ✅ 샘플 일괄 주입(필요 수만큼)
-      async seedSamples(samples) {
-        for (const [nick, msg] of samples) {
-          await this.saveMessage(nick, msg);
-          await new Promise(r => setTimeout(r, 60)); // 살짝 딜레이
-        }
       }
     }
 
     const cheerDB = new CheerMessageDB();
-    window.cheerDB = cheerDB; // (디버깅용)
+    window.cheerDB = cheerDB; // (필요시 디버깅용)
 
     function isEncouragementMessage(text) {
       const encouragementKeywords = [
@@ -346,7 +358,7 @@
         isEncouragement ? startEncouragementSequence() : showGameEndPage();
       }
     }
-    // 모듈 스코프 → 전역으로 노출
+    // ⚠️ 모듈 스코프 → 클릭 가능한 전역으로 노출
     window.goToFinalPage = goToFinalPage;
 
     function showGameEndPage() {
@@ -609,9 +621,63 @@
 
     function showCompletionMessage() {
       const completionDiv = document.createElement('div');
-      completionDiv.className = 'center-stage';
-      completionDiv.innerHTML = `<div class="final-message">연출이 종료되었습니다.</div>`;
+      completionDiv.className = 'completion-container';
+      completionDiv.innerHTML = `
+        <div class="completion-content">
+          <div class="completion-text">
+            <p>알았어. 알았어. 그만 해도 좋아.</p>
+            <br>
+            <p>아까부터 누가 말하는거냐고? 음... 뭐라고 해야할까.<br>
+            나로 말할 거 같으면... 인간들이 흔히 말하는 신이라는<br>
+            존재 일수도 있고, 지금 너희의 이야기인 '운명의 세여신'의<br>
+            여신일 수도 있고, '작가'라고 말하는 존재일수도 있어.</p>
+            <br>
+            <p>이 이야기는 나의 뜻대로 정해져 있어. 너희가 아무리<br>
+            바꾸려고 한들, 바꿀 수 없다는 이야기야. 운명이란건<br>
+            그런거야. 아무리 발버둥쳐도 바꿀 수 없는 것.</p>
+            <br>
+            <p>노력하면 뭐든지 되는 거 아니었냐고? 그런거...너희들이<br>
+            만든 허상에 불과해. 될 사람은 노력하지 않아도 되고,<br>
+            안될 사람은 아무리 노력해도 안되는 거, 그게 이 세상이야.</p>
+            <br>
+            <p>...너무 한거 아니냐고? 좋아. 그래 맞아. 내가 지금 굳이 나타나지<br>
+            않아도 되는데 나타난건, 그래서 너희와 이야기하고 있는 건<br>
+            아마 너희, 그리고 수많은 다른 이진욱, 김기태, 고윤정, 이태성의<br>
+            의지가 모였기 때문일거야. 아마 이 이야기의 엔딩을 보고 그냥<br>
+            끝냈던 사람들, 혹은 그 의지를 담아 진심어린 응원을 보내지<br>
+            않았던 사람들은 아마 지금 나와 이야기하지 못하고 있을 거야.<br>
+            그만큼 너희가 운명을 바꾸고자 하는 의지가 크다는 거겠지.</p>
+            <br>
+            <p>그런 너희에게 운명을 바꿀 마지막 기회를 줄게. 지금 너희가<br>
+            가지고 있는 것, 그러니까 카드중에 하나를 이 이야기에서 없앨<br>
+            기회를 줄게. 너희가 올바른 선택을 한다면, 원하는대로 운명을<br>
+            바꿀 수 있을거야.</p>
+            <br>
+            <p>명심해. 기회는 한번 뿐이야. 잘 생각해서 판단하라구.</p>
+          </div>
+          
+          <div class="card-input-section">
+            <p class="input-instruction">카드 번호를 입력하세요.</p>
+            <input type="text" id="cardNumber" placeholder="카드 번호를 입력해주세요" maxlength="10">
+            <button id="submitCard" onclick="submitCardNumber()">확인</button>
+          </div>
+        </div>
+      `;
       document.body.appendChild(completionDiv);
+    }
+
+    function submitCardNumber() {
+      const cardNumber = document.getElementById('cardNumber').value.trim();
+      
+      if (!cardNumber) {
+        alert('카드 번호를 입력해주세요.');
+        document.getElementById('cardNumber').focus();
+        return;
+      }
+      
+      // 여기에 카드 번호 처리 로직을 추가할 수 있습니다
+      console.log('입력된 카드 번호:', cardNumber);
+      alert(`카드 번호 "${cardNumber}"가 입력되었습니다.`);
     }
 
     function showRandomCheer(message) {
@@ -648,13 +714,12 @@
       }, 1500);
     }
 
-    // ✅ 초기 샘플 데이터: 최소 개수 보장(예: 24개)
+    // 초기 샘플 데이터 (권한/네트워크 이슈 시 무시)
     window.addEventListener('load', async () => {
       try {
-        const MIN = 24;                 // 원하는 최소 개수
-        const cur = await cheerDB.countAll();
-        if (cur < MIN) {
-          const needed = MIN - cur;
+        const existing = await cheerDB.getAllMessages();
+        if (!existing || existing.length === 0) {
+          // 더 많은 샘플 데이터 추가 (랜덤 연출을 위해)
           const sampleMessages = [
             ['응원단장', '힘내세요! 항상 응원하고 있어요!'],
             ['열정맨', '포기하지 마세요! 끝까지 화이팅!'],
@@ -682,13 +747,14 @@
             ['달빛', '고요한 밤에도 빛을 잃지 마세요!'],
             ['하트', '진심 어린 마음으로 응원합니다!']
           ];
-          await cheerDB.seedSamples(sampleMessages.slice(0, needed));
-          console.log(`[seed] 샘플 ${needed}개 주입 (총 ${MIN}개 보장)`);
-        } else {
-          console.log(`[seed] 현재 ${cur}개 있어 주입 생략`);
+          
+          for (const [nick, msg] of sampleMessages) {
+            await cheerDB.saveMessage(nick, msg);
+            await new Promise(resolve => setTimeout(resolve, 100)); // 저장 간격
+          }
         }
       } catch (e) {
-        console.warn('[seed] 실패:', e);
+        console.warn('샘플 주입 실패:', e);
       }
       document.getElementById('nickname').focus();
     });
