@@ -143,7 +143,7 @@
     .cheer-content { font-size:1.8rem; font-weight:600; margin-bottom:15px; line-height:1.4; color:#fff; }
     .cheer-author { font-size:1rem; color:rgba(255,255,255,0.7); font-style:italic; }
 
-    /* 랜덤 응원글 표시 스타일 (전역 .content와 충돌 피하려고 클래스 분리) */
+    /* 랜덤 응원글 (전역 .content와 충돌 피하려고 클래스 분리) */
     .random-cheer {
       position:fixed; z-index:998; pointer-events:none;
       opacity:0; transform:scale(0.8); transition:all 0.5s ease;
@@ -170,7 +170,7 @@
       font-family:'Noto Serif KR', serif; line-height:1.6;
       padding-bottom:2rem;
     }
-    .completion-text { font-size:0.95rem; margin-bottom:3rem; }
+    .completion-text { font-size:0.85rem; margin-bottom:3rem; }
     .completion-text p { margin-bottom:0.5rem; }
 
     .card-input-section {
@@ -248,6 +248,8 @@
       .end-thanks { font-size:1rem; }
       .cheer-content { font-size:1.4rem; }
       .cheer-author { font-size:0.9rem; }
+      .epilogue-content { max-width:100%; }
+      .epilogue-text { font-size:0.85rem; line-height:1.6; }
     }
     @media (max-width:480px){
       .content { font-size:.85rem !important; line-height:1.5 !important; }
@@ -257,8 +259,6 @@
       .green-message { font-size:1.2rem; }
       .cheer-content { font-size:1.2rem; }
       .cheer-author { font-size:0.8rem; }
-      .epilogue-content { max-width:100%; }
-      .epilogue-text { font-size:0.85rem; line-height:1.6; }
     }
 
     ::-webkit-scrollbar { width:6px; }
@@ -359,8 +359,7 @@
       }
 
       async countAll() {
-        const col = collection(db, this.collectionName);
-        const snap = await getCountFromServer(query(col));
+        const snap = await getCountFromServer(collection(db, this.collectionName));
         return snap.data().count || 0;
       }
 
@@ -407,6 +406,11 @@
     }
 
     function showGameEndPage() {
+      // 기존 오버레이 제거
+      document.querySelector('.completion-container')?.remove();
+      document.querySelector('.correct-ending-container')?.remove();
+      document.querySelector('.epilogue-container')?.remove();
+
       document.querySelector('.container').style.display = 'none';
       const endPageHTML = `
         <div class="game-end-container">
@@ -619,8 +623,6 @@
     async function startRandomCheerAnimation(displayedMessages) {
       try {
         const allMessages = await cheerDB.getAllMessages();
-
-        // 이미 표시한 4개 제외 후 섞어서 20개까지
         const displayedIds = new Set(displayedMessages.map(m => m.id));
         const remaining = allMessages.filter(m => !displayedIds.has(m.id));
         shuffleInPlace(remaining);
@@ -685,21 +687,33 @@
           </div>
           <div class="card-input-section">
             <p class="input-instruction">카드 번호를 입력하세요.</p>
-            <input type="text" id="cardNumber" placeholder="카드 번호를 입력해주세요" maxlength="10" inputmode="numeric">
+            <input type="text" id="cardNumber"
+                   placeholder="카드 번호를 입력해주세요"
+                   maxlength="10" inputmode="numeric"
+                   autocomplete="off" autocapitalize="off">
             <button id="submitCard">확인</button>
           </div>
         </div>
       `;
       document.body.appendChild(completionDiv);
 
-      // 이벤트 바인딩 (인라인 핸들러 사용 안 함)
+      // 🔒 오버레이 띄운 직후 화면을 맨 위로 고정 (모바일 키보드 자동 띄움 방지)
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        completionDiv.scrollTop = 0;
+      });
+
+      // 이벤트 바인딩
       const submitBtn = completionDiv.querySelector('#submitCard');
       const cardInput = completionDiv.querySelector('#cardNumber');
+
       submitBtn.addEventListener('click', submitCardNumber);
       cardInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') submitCardNumber();
       });
-      cardInput.focus();
+
+      // ❌ 자동 focus 금지 (커서가 가지 않도록)
+      // cardInput.focus();
     }
 
     function submitCardNumber() {
@@ -707,19 +721,20 @@
       const cardNumber = (field?.value || '').trim();
       if (!cardNumber) {
         alert('카드 번호를 입력해주세요.');
-        field?.focus();
+        // 자동 포커스는 하지 않음
         return;
       }
       if (cardNumber === '10') {
         showCorrectEnding();
       } else {
+        // 오버레이 제거 후 일반 엔딩
+        document.querySelector('.completion-container')?.remove();
         showGameEndPage();
       }
     }
 
     function showCorrectEnding() {
-      const existingCompletion = document.querySelector('.completion-container');
-      if (existingCompletion) existingCompletion.remove();
+      document.querySelector('.completion-container')?.remove();
 
       const correctDiv = document.createElement('div');
       correctDiv.className = 'correct-ending-container';
@@ -737,13 +752,11 @@
       `;
       document.body.appendChild(correctDiv);
 
-      // 이벤트 바인딩
       correctDiv.querySelector('#epilogueBtn').addEventListener('click', showEpilogue);
     }
 
     function showEpilogue() {
-      const existingCorrect = document.querySelector('.correct-ending-container');
-      if (existingCorrect) existingCorrect.remove();
+      document.querySelector('.correct-ending-container')?.remove();
 
       const epilogueDiv = document.createElement('div');
       epilogueDiv.className = 'epilogue-container';
@@ -881,7 +894,7 @@
       document.getElementById('nickname')?.focus();
     });
 
-    // ====== 정적 요소 이벤트 바인딩 (인라인 핸들러 미사용) ======
+    // ====== 정적 요소 이벤트 바인딩 ======
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('finalButton')?.addEventListener('click', goToFinalPage);
       document.getElementById('nickname')?.addEventListener('keypress', e => {
@@ -891,3 +904,4 @@
   </script>
 </body>
 </html>
+
