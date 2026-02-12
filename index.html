@@ -898,8 +898,10 @@
       } catch (e) {
         console.warn('[seed] 실패:', e);
       }
-      fitContentText();
-      window.addEventListener('resize', fitContentText);
+      document.fonts.ready.then(() => {
+  fitContentText();
+  window.addEventListener('resize', fitContentText);
+});
       document.getElementById('nickname')?.focus();
     });
 
@@ -911,13 +913,11 @@
       });
     });
 
-    function fitContentText() {
+function fitContentText() {
   const content = document.querySelector('.content');
   if (!content) return;
   const paragraphs = content.querySelectorAll('p:not(.last-paragraph)');
   const containerWidth = content.clientWidth;
-
-  paragraphs.forEach(p => p.style.whiteSpace = 'nowrap');
 
   let maxWidth = 0;
   paragraphs.forEach(p => {
@@ -926,7 +926,7 @@
 
   if (maxWidth > containerWidth) {
     const currentSize = parseFloat(getComputedStyle(content).fontSize);
-    const newSize = Math.floor(currentSize * (containerWidth / maxWidth) * 10) / 10;
+    const newSize = Math.floor(currentSize * (containerWidth / maxWidth) * 0.98 * 10) / 10;
     content.style.fontSize = newSize + 'px';
   }
 }
