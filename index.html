@@ -35,8 +35,10 @@
     .content {
       font-size:1rem; font-weight:400; margin-bottom:2.5rem;
       text-align:justify; color:#e8e8e8; line-height:1.7;
+      overflow:hidden;
     }
-    .content p { margin-bottom:0.3rem; }
+    .content p { margin-bottom:0.3rem; white-space:nowrap; }
+    .content p.last-paragraph { white-space:normal; }
 
     .author-name { color:#ccc; font-weight:500; margin-bottom:0; }
     .section-break { margin-top:1.5rem; }
