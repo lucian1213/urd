@@ -393,13 +393,17 @@
       const isEncouragement = isEncouragementMessage(message);
 
       try {
-        if (isEncouragement) {
-          await cheerDB.saveMessage(nickname, message);
-          startEncouragementSequence();
-        } else {
-          showGameEndPage();
-        }
-      } catch (err) {
+  if (isEncouragement) {
+    const savePromise = cheerDB.saveMessage(nickname, message);
+    const timeout = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('timeout')), 5000)
+    );
+    await Promise.race([savePromise, timeout]).catch(() => {});
+    startEncouragementSequence();
+  } else {
+    showGameEndPage();
+  }
+} catch (err) {
         console.error('저장/분기 오류:', err);
         isEncouragement ? startEncouragementSequence() : showGameEndPage();
       }
@@ -565,6 +569,7 @@
             finalMessage.style.opacity = '1';
           }, 500);
         }
+        setTimeout(() => showCompletionMessage(), 3000);
         return;
       }
 
