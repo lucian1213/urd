@@ -32,14 +32,26 @@
       margin-bottom:2.5rem; color:#fff; letter-spacing:1px;
     }
 
+    /* ── 핵심: 고정 너비 + scale ── */
+    .content-wrapper {
+      margin-bottom:2.5rem;
+      overflow:hidden; /* scale 시 삐져나감 방지 */
+    }
     .content {
-      font-size:1rem; font-weight:400; margin-bottom:2.5rem;
+      width:550px;            /* 고정 너비 */
+      transform-origin:top left;
+      font-size:1rem; font-weight:400;
       color:#e8e8e8; line-height:1.7;
     }
-    .content p { margin-bottom:0.1rem; }
+    .content p {
+      margin-bottom:0.1rem;
+      white-space:nowrap;     /* 절대 줄바꿈 안 함 */
+    }
+    /* ────────────────────────── */
 
     .author-name { color:#ccc; font-weight:500; }
     .section-break { margin-top:1.5rem; }
+    .last-paragraph { white-space:normal !important; } /* 마지막 문단은 자연 줄바꿈 */
 
     .input-section {
       margin:2.5rem 0; background:rgba(20,20,20,0.8);
@@ -238,22 +250,24 @@
   <div class="container">
     <h1 class="title">작가의 말</h1>
 
-    <div class="content">
-      <p class="author-name" data-gimmick>아...안녕하세요. 작가 루시안입니다. 한분 한분</p>
-      <p data-gimmick>직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.</p>
+    <div class="content-wrapper">
+      <div class="content" id="contentArea">
+        <p class="author-name" data-gimmick>아...안녕하세요. 작가 루시안입니다. 한분 한분</p>
+        <p data-gimmick>직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.</p>
 
-      <p class="section-break" data-gimmick>게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의</p>
-      <p data-gimmick>임무는 어떻게 느껴지셨나요? 각자가</p>
-      <p data-gimmick>은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.</p>
+        <p class="section-break" data-gimmick>게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의</p>
+        <p data-gimmick>임무는 어떻게 느껴지셨나요? 각자가</p>
+        <p data-gimmick>은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.</p>
 
-      <p class="section-break" data-gimmick>끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.</p>
-      <p data-gimmick>나였어도 그렇게 생각할거에요. 운명은 정해진거라니...</p>
-      <p data-gimmick>지금도 전 운명은 정해져 있다고 생각해요. 그렇지</p>
-      <p data-gimmick>않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋</p>
-      <p data-gimmick>았던 순간 모두 당신의 운명이에요.</p>
-      <p data-gimmick>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
+        <p class="section-break" data-gimmick>끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.</p>
+        <p data-gimmick>나였어도 그렇게 생각할거에요. 운명은 정해진거라니...</p>
+        <p data-gimmick>지금도 전 운명은 정해져 있다고 생각해요. 그렇지</p>
+        <p data-gimmick>않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋</p>
+        <p data-gimmick>았던 순간 모두 당신의 운명이에요.</p>
+        <p data-gimmick>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
 
-      <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
+        <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
+      </div>
     </div>
 
     <div class="input-section" id="inputSection">
@@ -287,6 +301,23 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // ====== 고정 너비 → scale 맞춤 ======
+    const CONTENT_FIXED_WIDTH = 550;
+
+    function scaleContent() {
+      const wrapper = document.querySelector('.content-wrapper');
+      const content = document.getElementById('contentArea');
+      if (!wrapper || !content) return;
+
+      const availableWidth = wrapper.clientWidth;
+      const scale = Math.min(1, availableWidth / CONTENT_FIXED_WIDTH);
+
+      content.style.transform = 'scale(' + scale + ')';
+      // scale은 레이아웃에 영향을 안 주므로, wrapper 높이를 수동 조정
+      wrapper.style.height = (content.scrollHeight * scale) + 'px';
+    }
+
+    // ====== Firebase DB ======
     class CheerMessageDB {
       constructor() { this.collectionName = 'cheerMessages'; }
       async saveMessage(nickname, message) {
@@ -399,12 +430,10 @@
           const rest = (p.textContent || '').slice(1);
 
           if (hasGimmick) {
-            // 기믹 줄: 첫 글자는 노란색으로 유지, 나머지는 페이드아웃
             p.innerHTML =
               '<span class="first-char-only">' + firstChar + '</span>' +
               '<span class="fade-out-text">' + rest + '</span>';
           } else {
-            // 비기믹 줄 (마지막 문단 등): 전체 페이드아웃
             p.innerHTML = '<span class="fade-out-text">' + p.textContent + '</span>';
           }
 
@@ -427,10 +456,10 @@
       if (green) green.classList.add('fade-out-fast');
       setTimeout(() => {
         const title = document.querySelector('.title');
-        const content = document.querySelector('.content');
+        const contentWrapper = document.querySelector('.content-wrapper');
         const inputSection = document.getElementById('inputSection');
         if (title) { title.classList.add('fade-out-fast'); setTimeout(()=> title.style.display='none', 600); }
-        if (content){ content.classList.add('fade-out-fast'); setTimeout(()=> content.style.display='none',600); }
+        if (contentWrapper){ contentWrapper.classList.add('fade-out-fast'); setTimeout(()=> contentWrapper.style.display='none',600); }
         if (inputSection){ inputSection.classList.add('fade-out-fast'); setTimeout(()=> inputSection.style.display='none',600); }
         setTimeout(() => {
           const center = document.createElement('div');
@@ -542,6 +571,11 @@
 
     // ====== 초기화 ======
     window.addEventListener('load', async () => {
+      // 폰트 로딩 완료 후 scale 적용
+      await document.fonts.ready;
+      scaleContent();
+      window.addEventListener('resize', scaleContent);
+
       try {
         const MIN = 24;
         const cur = await cheerDB.countAll();
