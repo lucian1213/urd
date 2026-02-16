@@ -35,10 +35,8 @@
     .content {
       font-size:1rem; font-weight:400; margin-bottom:2.5rem;
       text-align:justify; color:#e8e8e8; line-height:1.7;
-      overflow:hidden;
     }
-    .content p { margin-bottom:0.3rem; white-space:nowrap; }
-    .content p.last-paragraph { white-space:normal; }
+    .content p { margin-bottom:0.3rem; }
 
     .author-name { color:#ccc; font-weight:500; margin-bottom:0; }
     .section-break { margin-top:1.5rem; }
@@ -145,7 +143,7 @@
     .cheer-content { font-size:1.8rem; font-weight:600; margin-bottom:15px; line-height:1.4; color:#fff; }
     .cheer-author { font-size:1rem; color:rgba(255,255,255,0.7); font-style:italic; }
 
-    /* 랜덤 응원글 (전역 .content와 충돌 피하려고 클래스 분리) */
+    /* 랜덤 응원글 */
     .random-cheer {
       position:fixed; z-index:998; pointer-events:none;
       opacity:0; transform:scale(0.8); transition:all 0.5s ease;
@@ -273,23 +271,8 @@
   <div class="container">
     <h1 class="title">작가의 말</h1>
 
-    <div class="content">
-      <p class="author-name">아...안녕하세요. 작가 루시안입니다. 한분 한분</p>
-      <p>직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.</p>
-
-      <p class="section-break">게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의</p>
-      <p>임무는 어떻게 느껴지셨나요? 각자가</p>
-      <p>은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.</p>
-
-      <p class="section-break">끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.</p>
-      <p>나였어도 그렇게 생각할거에요. 운명은 정해진거라니...</p>
-      <p>지금도 전 운명은 정해져 있다고 생각해요. 그렇지</p>
-      <p>않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋</p>
-      <p>았던 순간 모두 당신의 운명이에요.</p>
-      <p>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
-
-      <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
-    </div>
+    <!-- JS가 동적으로 <p> 생성 -->
+    <div class="content" id="contentArea"></div>
 
     <div class="input-section" id="inputSection">
       <div class="input-group">
@@ -327,6 +310,114 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // ====== 텍스트 데이터 (기믹용) ======
+    // 각 줄의 첫 글자 → 아 직 게 임 은 끝 나 지 않 았 어
+    const textSections = [
+      {
+        lines: [
+          "아...안녕하세요. 작가 루시안입니다. 한분 한분 직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.",
+        ]
+      },
+      {
+        lines: [
+          "게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의 임무는 어떻게 느껴지셨나요? 각자가 은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.",
+        ]
+      },
+      {
+        lines: [
+          "끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요. 나였어도 그렇게 생각할거에요. 운명은 정해진거라니... 지금도 전 운명은 정해져 있다고 생각해요. 그렇지 않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋았던 순간 모두 당신의 운명이에요. 어떤 의미든 모든 순간이 소중했을 거라고 생각해요.",
+        ]
+      }
+    ];
+    const lastParagraphText = "지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?";
+
+    // 기믹 첫 글자 목록 (섹션별 줄별)
+    const gimmickFirstChars = [
+      ["아", "직"],              // 섹션0: 아...안녕 / 직접 뵙고
+      ["게", "임", "은"],        // 섹션1: 게임은 / 임무는 / 은밀하게
+      ["끝", "나", "지", "않", "았", "어"]  // 섹션2: 끝나고/나였어도/지금도/않다면/았던/어떤
+    ];
+
+    function buildContent() {
+      const content = document.getElementById('contentArea');
+      if (!content) return;
+      content.innerHTML = '';
+
+      const containerWidth = content.clientWidth;
+
+      // 측정용 span
+      const measurer = document.createElement('span');
+      const style = getComputedStyle(content);
+      measurer.style.cssText =
+        'position:absolute;visibility:hidden;white-space:nowrap;' +
+        'font-family:' + style.fontFamily + ';' +
+        'font-size:' + style.fontSize + ';' +
+        'font-weight:' + style.fontWeight + ';' +
+        'letter-spacing:' + style.letterSpacing + ';';
+      document.body.appendChild(measurer);
+
+      function measure(text) {
+        measurer.textContent = text;
+        return measurer.offsetWidth;
+      }
+
+      // 텍스트를 containerWidth에 맞춰 줄 분리
+      function wrapText(text, maxW) {
+        const chars = [...text];
+        const lines = [];
+        let current = '';
+
+        for (let i = 0; i < chars.length; i++) {
+          const test = current + chars[i];
+          if (measure(test) > maxW && current.length > 0) {
+            lines.push(current);
+            current = chars[i];
+          } else {
+            current = test;
+          }
+        }
+        if (current.length > 0) lines.push(current);
+        return lines;
+      }
+
+      textSections.forEach((section, si) => {
+        const fullText = section.lines.join(' ');
+        const wrappedLines = wrapText(fullText, containerWidth);
+
+        // 기믹 첫 글자 매칭
+        const chars = gimmickFirstChars[si] || [];
+        let charIdx = 0;
+
+        wrappedLines.forEach((line, li) => {
+          const p = document.createElement('p');
+          p.textContent = line;
+
+          // 이 줄의 첫 글자가 기믹 목록의 다음 글자와 일치하면 기믹 표시
+          if (charIdx < chars.length && line.charAt(0) === chars[charIdx]) {
+            p.dataset.gimmick = 'true';
+            charIdx++;
+          }
+
+          // 첫 섹션 첫 줄 스타일
+          if (si === 0 && li === 0) p.classList.add('author-name');
+
+          // 섹션 첫 줄 간격
+          if (li === 0 && si > 0) p.classList.add('section-break');
+
+          content.appendChild(p);
+        });
+      });
+
+      // 마지막 문단 (자연 줄바꿈)
+      const lastP = document.createElement('p');
+      lastP.className = 'section-break last-paragraph';
+      lastP.textContent = lastParagraphText;
+      content.appendChild(lastP);
+
+      measurer.remove();
+    }
+
+    // ====== Firebase DB ======
     class CheerMessageDB {
       constructor() { this.collectionName = 'cheerMessages'; }
 
@@ -344,7 +435,7 @@
       async getRecentMessages(count = 4) {
         const qy = query(
           collection(db, this.collectionName),
-          orderBy('timestamp', 'desc'),
+          orderBy('createdAt', 'desc'),
           limit(count)
         );
         const snap = await getDocs(qy);
@@ -354,7 +445,7 @@
       async getAllMessages() {
         const qy = query(
           collection(db, this.collectionName),
-          orderBy('timestamp', 'desc')
+          orderBy('createdAt', 'desc')
         );
         const snap = await getDocs(qy);
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -395,24 +486,24 @@
       const isEncouragement = isEncouragementMessage(message);
 
       try {
-  if (isEncouragement) {
-    const savePromise = cheerDB.saveMessage(nickname, message);
-    const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('timeout')), 5000)
-    );
-    await Promise.race([savePromise, timeout]).catch(() => {});
-    startEncouragementSequence();
-  } else {
-    showGameEndPage();
-  }
-} catch (err) {
+        if (isEncouragement) {
+          // 타임아웃 래핑 — Firebase가 느려도 연출 진행
+          const savePromise = cheerDB.saveMessage(nickname, message);
+          const timeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), 5000)
+          );
+          await Promise.race([savePromise, timeout]).catch(() => {});
+          startEncouragementSequence();
+        } else {
+          showGameEndPage();
+        }
+      } catch (err) {
         console.error('저장/분기 오류:', err);
         isEncouragement ? startEncouragementSequence() : showGameEndPage();
       }
     }
 
     function showGameEndPage() {
-      // 기존 오버레이 제거
       document.querySelector('.completion-container')?.remove();
       document.querySelector('.correct-ending-container')?.remove();
       document.querySelector('.epilogue-container')?.remove();
@@ -499,20 +590,25 @@
     }
 
     function startCharacterExtraction() {
-      const contentParagraphs = document.querySelectorAll('.content p');
+      const allParagraphs = document.querySelectorAll('.content p');
       const lastParagraph = document.querySelector('.last-paragraph');
       if (lastParagraph) lastParagraph.classList.add('fade-out-paragraph');
 
       let idx = 0;
       const step = setInterval(() => {
-        if (idx < contentParagraphs.length) {
-          const p = contentParagraphs[idx];
-          const firstChar = (p.textContent || '').charAt(0) || '';
-          const rest = (p.textContent || '').slice(1);
+        if (idx < allParagraphs.length) {
+          const p = allParagraphs[idx];
+          const isGimmick = p.dataset.gimmick === 'true';
+          const text = p.textContent || '';
 
-          p.innerHTML = `
-            <span class="first-char-only">${firstChar}</span>
-            <span class="fade-out-text">${rest}</span>`;
+          if (isGimmick) {
+            p.innerHTML =
+              '<span class="first-char-only">' + text.charAt(0) + '</span>' +
+              '<span class="fade-out-text">' + text.slice(1) + '</span>';
+          } else {
+            p.innerHTML = '<span class="fade-out-text">' + text + '</span>';
+          }
+
           setTimeout(() => {
             const fade = p.querySelector('.fade-out-text');
             if (fade) fade.classList.add('fade-out');
@@ -571,6 +667,7 @@
             finalMessage.style.opacity = '1';
           }, 500);
         }
+        // 데드엔드 방지 — 3초 후 다음 단계로 진행
         setTimeout(() => showCompletionMessage(), 3000);
         return;
       }
@@ -704,13 +801,11 @@
       `;
       document.body.appendChild(completionDiv);
 
-      // 🔒 오버레이 띄운 직후 화면을 맨 위로 고정 (모바일 키보드 자동 띄움 방지)
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
         completionDiv.scrollTop = 0;
       });
 
-      // 이벤트 바인딩
       const submitBtn = completionDiv.querySelector('#submitCard');
       const cardInput = completionDiv.querySelector('#cardNumber');
 
@@ -718,9 +813,6 @@
       cardInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') submitCardNumber();
       });
-
-      // ❌ 자동 focus 금지 (커서가 가지 않도록)
-      // cardInput.focus();
     }
 
     function submitCardNumber() {
@@ -728,13 +820,11 @@
       const cardNumber = (field?.value || '').trim();
       if (!cardNumber) {
         alert('카드 번호를 입력해주세요.');
-        // 자동 포커스는 하지 않음
         return;
       }
       if (cardNumber === '10') {
         showCorrectEnding();
       } else {
-        // 오버레이 제거 후 일반 엔딩
         document.querySelector('.completion-container')?.remove();
         showGameEndPage();
       }
@@ -858,8 +948,13 @@
       return arr;
     }
 
-    // ====== 초기 시드(최소 24개 보장) & 초기 포커스 ======
+    // ====== 초기 시드(최소 24개 보장) & 텍스트 빌드 ======
     window.addEventListener('load', async () => {
+      // 폰트 로딩 후 텍스트 빌드
+      await document.fonts.ready;
+      buildContent();
+      window.addEventListener('resize', () => buildContent());
+
       try {
         const MIN = 24;
         const cur = await cheerDB.countAll();
@@ -898,10 +993,6 @@
       } catch (e) {
         console.warn('[seed] 실패:', e);
       }
-      document.fonts.ready.then(() => {
-  fitContentText();
-  window.addEventListener('resize', fitContentText);
-});
       document.getElementById('nickname')?.focus();
     });
 
@@ -912,25 +1003,6 @@
         if (e.key === 'Enter') document.getElementById('message')?.focus();
       });
     });
-
-function fitContentText() {
-  const content = document.querySelector('.content');
-  if (!content) return;
-  const paragraphs = content.querySelectorAll('p:not(.last-paragraph)');
-  const containerWidth = content.clientWidth;
-
-  let maxWidth = 0;
-  paragraphs.forEach(p => {
-    if (p.scrollWidth > maxWidth) maxWidth = p.scrollWidth;
-  });
-
-  if (maxWidth > containerWidth) {
-    const currentSize = parseFloat(getComputedStyle(content).fontSize);
-    const newSize = Math.floor(currentSize * (containerWidth / maxWidth) * 0.98 * 10) / 10;
-    content.style.fontSize = newSize + 'px';
-  }
-}
   </script>
 </body>
 </html>
-
