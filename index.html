@@ -9,90 +9,253 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Noto Serif KR', serif; background:#000; color:#fff; padding:15px; min-height:100vh; overflow-x:hidden; }
-    .container { max-width:600px; margin:0 auto; padding:30px 15px; animation:fadeIn 1.5s ease-in-out forwards; }
+
+    body {
+      font-family:'Noto Serif KR', serif;
+      background:#000; color:#fff; padding:15px;
+      min-height:100vh; overflow-x:hidden;
+    }
+
+    .container {
+      max-width:600px; margin:0 auto; padding:30px 15px;
+      animation:fadeIn 1.5s ease-in-out forwards;
+    }
     .container.animation-done { animation:none; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
-    .title { font-size:1.6rem; font-weight:600; text-align:center; margin-bottom:2.5rem; color:#fff; letter-spacing:1px; }
-    .content { font-size:1rem; font-weight:400; margin-bottom:2.5rem; text-align:justify; color:#e8e8e8; line-height:1.7; }
-    .content p { margin-bottom:0.3rem; }
-    .author-name { color:#ccc; font-weight:500; margin-bottom:0; }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .title {
+      font-size:1.6rem; font-weight:600; text-align:center;
+      margin-bottom:2.5rem; color:#fff; letter-spacing:1px;
+    }
+
+    .content {
+      font-size:1rem; font-weight:400; margin-bottom:2.5rem;
+      color:#e8e8e8; line-height:1.7;
+    }
+    .content p { margin-bottom:0.1rem; }
+
+    .author-name { color:#ccc; font-weight:500; }
     .section-break { margin-top:1.5rem; }
-    .input-section { margin:2.5rem 0; background:rgba(20,20,20,0.8); padding:1.5rem; border-radius:12px; border:1px solid #333; transition:opacity .8s ease-out, background .3s ease, border-color .3s ease; }
+
+    .input-section {
+      margin:2.5rem 0; background:rgba(20,20,20,0.8);
+      padding:1.5rem; border-radius:12px; border:1px solid #333;
+      transition:opacity .8s ease-out, background .3s ease, border-color .3s ease;
+    }
+
     .input-group { margin-bottom:1.2rem; }
-    .input-group label { display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff; }
-    .input-group input { width:100%; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif; font-size:14px; transition:border-color .3s ease; }
+    .input-group label {
+      display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
+    }
+    .input-group input {
+      width:100%; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff;
+      font-family:'Noto Serif KR', serif; font-size:14px; transition:border-color .3s ease;
+    }
     .input-group input:focus { outline:none; border-color:#666; background:#222; }
     .input-group input::placeholder { color:#777; }
+
     .textarea-group { margin-bottom:1rem; }
-    .textarea-group label { display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff; }
-    .textarea-group textarea { width:100%; min-height:120px; padding:.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif; font-size:14px; resize:vertical; line-height:1.5; transition:border-color .3s ease; }
+    .textarea-group label {
+      display:block; font-size:.9rem; font-weight:500; margin-bottom:.6rem; color:#fff;
+    }
+    .textarea-group textarea {
+      width:100%; min-height:120px; padding:.8rem; background:#1a1a1a;
+      border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif;
+      font-size:14px; resize:vertical; line-height:1.5; transition:border-color .3s ease;
+    }
     .textarea-group textarea:focus { outline:none; border-color:#666; background:#222; }
     .textarea-group textarea::placeholder { color:#777; }
-    .small-text { font-size:.75rem; color:#999; text-align:center; margin-bottom:1.5rem; font-style:italic; }
-    .final-button { display:block; width:100%; max-width:280px; margin:2.5rem auto 0; padding:1rem 1.5rem; background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff; font-family:'Noto Serif KR', serif; font-size:1rem; font-weight:500; border-radius:8px; cursor:pointer; transition:all .3s ease; text-decoration:none; text-align:center; }
+
+    .small-text {
+      font-size:.75rem; color:#999; text-align:center; margin-bottom:1.5rem; font-style:italic;
+    }
+
+    .final-button {
+      display:block; width:100%; max-width:280px; margin:2.5rem auto 0; padding:1rem 1.5rem;
+      background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff;
+      font-family:'Noto Serif KR', serif; font-size:1rem; font-weight:500; border-radius:8px;
+      cursor:pointer; transition:all .3s ease; text-decoration:none; text-align:center;
+    }
     .final-button:hover { background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); border-color:#666; transform:translateY(-2px); box-shadow:0 5px 15px rgba(255,255,255,.1); }
     .final-button:active { transform:translateY(0); }
+
     .fade-out { opacity:0 !important; transition:opacity .8s ease; }
     .fade-out-fast { opacity:0 !important; transition:opacity .6s ease; }
+
     .typing-area { margin-top:2rem; text-align:center; font-family:'Noto Serif KR', serif; }
     .typing-text { font-size:1.3rem; color:#e8e8e8; font-weight:500; min-height:2rem; transition:color .3s ease; }
+
     .glitching { color:#ff4444 !important; animation:textGlitch .1s infinite; }
-    @keyframes textGlitch { 0% { transform:translate(0); text-shadow:2px 0 #f00, -2px 0 #0f0; } 25% { transform:translate(-1px,1px); text-shadow:-2px 0 #f00, 2px 0 #0f0; } 50% { transform:translate(1px,-1px); text-shadow:2px 0 #00f, -2px 0 #f00; } 75% { transform:translate(-1px,-1px); text-shadow:-2px 0 #0f0, 2px 0 #00f; } 100% { transform:translate(1px,1px); text-shadow:2px 0 #f00, -2px 0 #0f0; } }
+    @keyframes textGlitch {
+      0%   { transform:translate(0);       text-shadow:2px 0 #f00, -2px 0 #0f0; }
+      25%  { transform:translate(-1px,1px); text-shadow:-2px 0 #f00, 2px 0 #0f0; }
+      50%  { transform:translate(1px,-1px); text-shadow:2px 0 #00f, -2px 0 #f00; }
+      75%  { transform:translate(-1px,-1px);text-shadow:-2px 0 #0f0, 2px 0 #00f; }
+      100% { transform:translate(1px,1px);  text-shadow:2px 0 #f00, -2px 0 #0f0; }
+    }
+
     .screen-shake { animation:screenShake .15s infinite; }
-    @keyframes screenShake { 0% { transform:translate(0,0) rotate(0deg); } 25% { transform:translate(2px,2px) rotate(.5deg); } 50% { transform:translate(-1px,1px) rotate(-.5deg); } 75% { transform:translate(1px,-2px) rotate(.5deg); } 100% { transform:translate(-2px,-1px) rotate(-.5deg); } }
+    @keyframes screenShake {
+      0%   { transform:translate(0,0) rotate(0deg); }
+      25%  { transform:translate(2px,2px) rotate(.5deg); }
+      50%  { transform:translate(-1px,1px) rotate(-.5deg); }
+      75%  { transform:translate(1px,-2px) rotate(.5deg); }
+      100% { transform:translate(-2px,-1px) rotate(-.5deg); }
+    }
+
     .green-message { font-size:1.5rem; font-weight:600; color:#4CAF50; margin-top:2rem; line-height:1.6; text-align:center; }
+
     .first-char-only { color:#ff0; font-weight:bold; font-size:1.1em; text-shadow:0 0 5px #ff0; }
     .fade-out-text { transition:opacity 1s ease-out; }
     .fade-out-paragraph { transition:opacity 1s ease-out; opacity:0; }
-    .final-message { font-size:1.6rem; font-weight:700; color:#4CAF50; letter-spacing:1px; text-shadow:0 0 12px #4CAF50; text-align:center; animation:finalGlow 2s ease-in-out infinite; }
-    @keyframes finalGlow { 0%,100% { text-shadow:0 0 10px #4CAF50; transform:scale(1); } 50% { text-shadow:0 0 20px #4CAF50, 0 0 30px #4CAF50; transform:scale(1.05); } }
-    .center-stage { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:999; background:transparent; animation:fadeIn .8s ease; padding:20px; flex-direction:column; }
-    .cheer-display { text-align:center; opacity:0; transform:translateY(20px); transition:all 0.8s ease; margin-top:50px; }
+
+    .final-message {
+      font-size:1.6rem; font-weight:700; color:#4CAF50; letter-spacing:1px;
+      text-shadow:0 0 12px #4CAF50; text-align:center; animation:finalGlow 2s ease-in-out infinite;
+    }
+    @keyframes finalGlow {
+      0%,100% { text-shadow:0 0 10px #4CAF50; transform:scale(1); }
+      50%     { text-shadow:0 0 20px #4CAF50, 0 0 30px #4CAF50; transform:scale(1.05); }
+    }
+
+    .center-stage {
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      z-index:999; background:transparent; animation:fadeIn .8s ease;
+      padding:20px; flex-direction:column;
+    }
+
+    .cheer-display {
+      text-align:center; opacity:0; transform:translateY(20px);
+      transition:all 0.8s ease; margin-top:50px;
+    }
     .cheer-display.show { opacity:1; transform:translateY(0); }
     .cheer-content { font-size:1.8rem; font-weight:600; margin-bottom:15px; line-height:1.4; color:#fff; }
     .cheer-author { font-size:1rem; color:rgba(255,255,255,0.7); font-style:italic; }
-    .random-cheer { position:fixed; z-index:998; pointer-events:none; opacity:0; transform:scale(0.8); transition:all 0.5s ease; text-align:center; max-width:300px; padding:10px; }
+
+    .random-cheer {
+      position:fixed; z-index:998; pointer-events:none;
+      opacity:0; transform:scale(0.8); transition:all 0.5s ease;
+      text-align:center; max-width:300px; padding:10px;
+    }
     .random-cheer.show { opacity:1; transform:scale(1); }
     .random-cheer .r-content { font-size:1rem; font-weight:500; color:rgba(255,255,255,0.9); margin-bottom:5px; line-height:1.3; }
     .random-cheer .r-author { font-size:0.8rem; color:rgba(255,255,255,0.6); font-style:italic; }
-    .completion-container { position:fixed; inset:0; background:#000; z-index:1000; overflow-y:auto; padding:20px; animation:fadeIn 1s ease; }
+
+    .completion-container {
+      position:fixed; inset:0; background:#000; z-index:1000;
+      overflow-y:auto; padding:20px; animation:fadeIn 1s ease;
+    }
     .completion-content { text-align:left; max-width:600px; margin:0 auto; color:#fff; font-family:'Noto Serif KR', serif; line-height:1.6; padding-bottom:2rem; }
     .completion-text { font-size:0.75rem; margin-bottom:3rem; }
     .completion-text p { margin-bottom:0.5rem; }
-    .card-input-section { text-align:center; margin-top:2rem; padding:2rem; background:rgba(20,20,20,0.8); border-radius:12px; border:1px solid #333; }
+
+    .card-input-section {
+      text-align:center; margin-top:2rem; padding:2rem; background:rgba(20,20,20,0.8);
+      border-radius:12px; border:1px solid #333;
+    }
     .input-instruction { font-size:1rem; margin-bottom:1rem; color:#fff; font-weight:500; }
-    .card-input-section input { width:200px; padding:0.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff; font-family:'Noto Serif KR', serif; font-size:14px; text-align:center; margin-bottom:1rem; }
+    .card-input-section input {
+      width:200px; padding:0.8rem; background:#1a1a1a; border:2px solid #333; border-radius:6px; color:#fff;
+      font-family:'Noto Serif KR', serif; font-size:14px; text-align:center; margin-bottom:1rem;
+    }
     .card-input-section input:focus { outline:none; border-color:#666; background:#222; }
-    .card-input-section button { display:block; margin:1rem auto 0; padding:0.8rem 2rem; background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff; font-family:'Noto Serif KR', serif; font-size:1rem; border-radius:8px; cursor:pointer; transition:all .3s ease; }
+    .card-input-section button {
+      display:block; margin:1rem auto 0; padding:0.8rem 2rem;
+      background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%);
+      border:2px solid #444; color:#fff; font-family:'Noto Serif KR', serif;
+      font-size:1rem; border-radius:8px; cursor:pointer; transition:all .3s ease;
+    }
     .card-input-section button:hover { background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); border-color:#666; transform:translateY(-2px); }
-    .correct-ending-container { position:fixed; inset:0; background:#000; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; animation:fadeIn 1s ease; }
+
+    .correct-ending-container {
+      position:fixed; inset:0; background:#000; z-index:1000;
+      display:flex; align-items:center; justify-content:center; padding:20px; animation:fadeIn 1s ease;
+    }
     .correct-ending-content { text-align:center; max-width:600px; color:#fff; font-family:'Noto Serif KR', serif; line-height:1.6; }
     .correct-ending-text { font-size:1.1rem; margin-bottom:3rem; }
     .correct-ending-text p { margin-bottom:1rem; }
     .epilogue-button-section { text-align:center; margin-top:2rem; }
-    .epilogue-button-section button { padding:1rem 2.5rem; background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%); border:2px solid #444; color:#fff; font-family:'Noto Serif KR', serif; font-size:1.1rem; border-radius:8px; cursor:pointer; transition:all .3s ease; }
+    .epilogue-button-section button {
+      padding:1rem 2.5rem; background:linear-gradient(135deg,#2a2a2a 0%,#1a1a1a 100%);
+      border:2px solid #444; color:#fff; font-family:'Noto Serif KR', serif;
+      font-size:1.1rem; border-radius:8px; cursor:pointer; transition:all .3s ease;
+    }
     .epilogue-button-section button:hover { background:linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%); border-color:#666; transform:translateY(-2px); }
-    .epilogue-container { position:fixed; inset:0; background:#000; z-index:1000; overflow-y:auto; padding:20px; animation:fadeIn 1s ease; }
+
+    .epilogue-container {
+      position:fixed; inset:0; background:#000; z-index:1000;
+      overflow-y:auto; padding:20px; animation:fadeIn 1s ease;
+    }
     .epilogue-content { text-align:left; max-width:700px; margin:0 auto; color:#fff; font-family:'Noto Serif KR', serif; line-height:1.7; padding-bottom:2rem; }
     .epilogue-text { font-size:0.95rem; }
     .epilogue-text p { margin-bottom:0.8rem; }
-    .game-end-container { position:fixed; inset:0; background:#000; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; }
+
+    .game-end-container {
+      position:fixed; inset:0; background:#000; z-index:1000;
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
     .game-end-content { text-align:center; animation:fadeIn 2s ease-in-out; }
     .end-message { color:#fff; }
     .end-main-text { font-size:1.4rem; font-weight:500; margin-bottom:2rem; color:#e8e8e8; line-height:1.6; }
     .end-thanks { font-size:1.1rem; font-weight:400; margin-bottom:3rem; color:#ccc; }
     .author-signature { margin-bottom:3rem; font-style:italic; color:#aaa; font-size:1rem; }
     .the-end { font-size:1.8rem; font-weight:600; color:#fff; letter-spacing:3px; margin-top:2rem; }
-    @media (max-width:768px){ .content { font-size:.9rem !important; line-height:1.6 !important; } .title { font-size:1.4rem; } .container { padding:20px 10px; } .input-section { padding:1.2rem; margin:2rem 0; } .typing-text { font-size:1.1rem; } .green-message { font-size:1.3rem; } .end-main-text { font-size:1.2rem; } .end-thanks { font-size:1rem; } .cheer-content { font-size:1.4rem; } .cheer-author { font-size:0.9rem; } .epilogue-content { max-width:100%; } .epilogue-text { font-size:0.85rem; line-height:1.6; } }
-    @media (max-width:480px){ .content { font-size:.85rem !important; line-height:1.5 !important; } .title { font-size:1.3rem; letter-spacing:.5px; } .input-section { padding:1rem; } .typing-text { font-size:1rem; } .green-message { font-size:1.2rem; } .cheer-content { font-size:1.2rem; } .cheer-author { font-size:0.8rem; } }
-    ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track { background:#1a1a1a; } ::-webkit-scrollbar-thumb { background:#444; border-radius:3px; } ::-webkit-scrollbar-thumb:hover { background:#666; }
+
+    @media (max-width:768px){
+      .title { font-size:1.4rem; }
+      .container { padding:20px 10px; }
+      .input-section { padding:1.2rem; margin:2rem 0; }
+      .typing-text { font-size:1.1rem; }
+      .green-message { font-size:1.3rem; }
+      .end-main-text { font-size:1.2rem; }
+      .end-thanks { font-size:1rem; }
+      .cheer-content { font-size:1.4rem; }
+      .cheer-author { font-size:0.9rem; }
+      .epilogue-content { max-width:100%; }
+      .epilogue-text { font-size:0.85rem; line-height:1.6; }
+    }
+    @media (max-width:480px){
+      .title { font-size:1.3rem; letter-spacing:.5px; }
+      .input-section { padding:1rem; }
+      .typing-text { font-size:1rem; }
+      .green-message { font-size:1.2rem; }
+      .cheer-content { font-size:1.2rem; }
+      .cheer-author { font-size:0.8rem; }
+    }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:#1a1a1a; }
+    ::-webkit-scrollbar-thumb { background:#444; border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:#666; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1 class="title">작가의 말</h1>
-    <div class="content" id="contentArea"></div>
+
+    <div class="content">
+      <p class="author-name" data-gimmick>아...안녕하세요. 작가 루시안입니다. 한분 한분</p>
+      <p data-gimmick>직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.</p>
+
+      <p class="section-break" data-gimmick>게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의</p>
+      <p data-gimmick>임무는 어떻게 느껴지셨나요? 각자가</p>
+      <p data-gimmick>은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.</p>
+
+      <p class="section-break" data-gimmick>끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.</p>
+      <p data-gimmick>나였어도 그렇게 생각할거에요. 운명은 정해진거라니...</p>
+      <p data-gimmick>지금도 전 운명은 정해져 있다고 생각해요. 그렇지</p>
+      <p data-gimmick>않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋</p>
+      <p data-gimmick>았던 순간 모두 당신의 운명이에요.</p>
+      <p data-gimmick>어떤 의미든 모든 순간이 소중했을 거라고 생각해요.</p>
+
+      <p class="section-break last-paragraph">지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?</p>
+    </div>
+
     <div class="input-section" id="inputSection">
       <div class="input-group">
         <label for="nickname">닉네임</label>
@@ -104,6 +267,7 @@
       </div>
       <p class="small-text">(아직도 운명을 바꾸고 싶다면, 진심을 다해 응원글을 적어주세요.)</p>
     </div>
+
     <button class="final-button" id="finalButton">마지막 페이지</button>
   </div>
 
@@ -123,88 +287,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    /* ====== 기믹 데이터 ======
-       각 줄의 첫 글자를 세로로 읽으면: 아 직 게 임 은 끝 나 지 않 았 어
-       각 줄은 독립 단위 — 화면이 좁으면 줄 내부만 쪼개고, 첫 글자는 보존 */
-    const gimmickLines = [
-      { text: "아...안녕하세요. 작가 루시안입니다. 한분 한분", section: 0, authorName: true },
-      { text: "직접 뵙고 인사드리고 싶지만 그럴 수 없어 아쉽습니다.", section: 0 },
-      { text: "게임은 어떠셨나요? 만족할만한 결말이었나요? 각자의", section: 1 },
-      { text: "임무는 어떻게 느껴지셨나요? 각자가", section: 1 },
-      { text: "은밀하게 움직였어야 했을텐데 어떠셨는지 궁금합니다.", section: 1 },
-      { text: "끝나고 나서 결말이 맘에 안드시는 분들도 있을거에요.", section: 2 },
-      { text: "나였어도 그렇게 생각할거에요. 운명은 정해진거라니...", section: 2 },
-      { text: "지금도 전 운명은 정해져 있다고 생각해요. 그렇지", section: 2 },
-      { text: "않다면, 세상은 너무 불확실하니까요. 싫었던 순간, 좋", section: 2 },
-      { text: "았던 순간 모두 당신의 운명이에요.", section: 2 },
-      { text: "어떤 의미든 모든 순간이 소중했을 거라고 생각해요.", section: 2 },
-    ];
-    const lastParagraphText = "지금 이 시간에도 운명을 바꾸기 위해 노력하는 다른 이진욱, 김기태, 고윤정, 이태성이 있을거에요. 그들에게 진심 어린 응원을 남겨볼까요? 다른 이들에게 힘이 될지도...?";
-
-    function buildContent() {
-      const content = document.getElementById('contentArea');
-      if (!content) return;
-      content.innerHTML = '';
-      const containerWidth = content.clientWidth;
-
-      const measurer = document.createElement('span');
-      const style = getComputedStyle(content);
-      measurer.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-family:' + style.fontFamily + ';font-size:' + style.fontSize + ';font-weight:' + style.fontWeight + ';letter-spacing:' + style.letterSpacing + ';';
-      document.body.appendChild(measurer);
-
-      function measure(text) { measurer.textContent = text; return measurer.offsetWidth; }
-
-      function wrapLine(text, maxW) {
-        if (measure(text) <= maxW) return [text];
-        const chars = [...text];
-        const lines = [];
-        let current = '';
-        for (let i = 0; i < chars.length; i++) {
-          const test = current + chars[i];
-          if (measure(test) > maxW && current.length > 0) {
-            lines.push(current);
-            current = chars[i];
-          } else {
-            current = test;
-          }
-        }
-        if (current.length > 0) lines.push(current);
-        return lines;
-      }
-
-      let prevSection = -1;
-
-      gimmickLines.forEach((lineData) => {
-        const subLines = wrapLine(lineData.text, containerWidth);
-
-        subLines.forEach((sub, subIdx) => {
-          const p = document.createElement('p');
-          p.textContent = sub;
-
-          // 첫 번째 서브라인만 기믹 (첫 글자가 세로 메시지의 일부)
-          if (subIdx === 0) p.dataset.gimmick = 'true';
-
-          if (lineData.authorName && subIdx === 0) p.classList.add('author-name');
-
-          if (lineData.section !== prevSection && subIdx === 0) {
-            if (prevSection !== -1) p.classList.add('section-break');
-            prevSection = lineData.section;
-          }
-
-          content.appendChild(p);
-        });
-      });
-
-      // 마지막 문단
-      const lastP = document.createElement('p');
-      lastP.className = 'section-break last-paragraph';
-      lastP.textContent = lastParagraphText;
-      content.appendChild(lastP);
-
-      measurer.remove();
-    }
-
-    // ====== Firebase DB ======
     class CheerMessageDB {
       constructor() { this.collectionName = 'cheerMessages'; }
       async saveMessage(nickname, message) {
@@ -304,24 +386,38 @@
     }
 
     function startCharacterExtraction() {
-      const allP = document.querySelectorAll('.content p');
-      const lastP = document.querySelector('.last-paragraph');
-      if (lastP) lastP.classList.add('fade-out-paragraph');
+      const contentParagraphs = document.querySelectorAll('.content p');
+      const lastParagraph = document.querySelector('.last-paragraph');
+      if (lastParagraph) lastParagraph.classList.add('fade-out-paragraph');
 
       let idx = 0;
       const step = setInterval(() => {
-        if (idx < allP.length) {
-          const p = allP[idx];
-          const isGimmick = p.dataset.gimmick === 'true';
-          const text = p.textContent || '';
-          if (isGimmick) {
-            p.innerHTML = '<span class="first-char-only">' + text.charAt(0) + '</span><span class="fade-out-text">' + text.slice(1) + '</span>';
+        if (idx < contentParagraphs.length) {
+          const p = contentParagraphs[idx];
+          const hasGimmick = p.hasAttribute('data-gimmick');
+          const firstChar = (p.textContent || '').charAt(0) || '';
+          const rest = (p.textContent || '').slice(1);
+
+          if (hasGimmick) {
+            // 기믹 줄: 첫 글자는 노란색으로 유지, 나머지는 페이드아웃
+            p.innerHTML =
+              '<span class="first-char-only">' + firstChar + '</span>' +
+              '<span class="fade-out-text">' + rest + '</span>';
           } else {
-            p.innerHTML = '<span class="fade-out-text">' + text + '</span>';
+            // 비기믹 줄 (마지막 문단 등): 전체 페이드아웃
+            p.innerHTML = '<span class="fade-out-text">' + p.textContent + '</span>';
           }
-          setTimeout(() => { const f = p.querySelector('.fade-out-text'); if (f) f.classList.add('fade-out'); }, 80);
+
+          setTimeout(() => {
+            const fade = p.querySelector('.fade-out-text');
+            if (fade) fade.classList.add('fade-out');
+          }, 80);
+
           idx++;
-        } else { clearInterval(step); setTimeout(fadeOutToBlankAndShowFinal, 900); }
+        } else {
+          clearInterval(step);
+          setTimeout(fadeOutToBlankAndShowFinal, 900);
+        }
       }, 480);
     }
 
@@ -374,7 +470,6 @@
       const existing = container.querySelector('.cheer-display');
       if (existing) { existing.classList.remove('show'); setTimeout(() => { existing.remove(); create(); }, 800); }
       else create();
-
       function create() {
         const d = document.createElement('div');
         d.className = 'cheer-display';
@@ -447,9 +542,6 @@
 
     // ====== 초기화 ======
     window.addEventListener('load', async () => {
-      await document.fonts.ready;
-      buildContent();
-      window.addEventListener('resize', () => buildContent());
       try {
         const MIN = 24;
         const cur = await cheerDB.countAll();
@@ -457,7 +549,6 @@
           const need = MIN - cur;
           const samples = [['응원단장','힘내세요! 항상 응원하고 있어요!'],['열정맨','포기하지 마세요! 끝까지 화이팅!'],['희망이','당신은 충분히 잘하고 있어요!'],['용기쌤','어려운 시기지만 반드시 극복할 거예요!'],['긍정왕','오늘도 좋은 하루 되세요!'],['드림캐처','꿈을 향해 달려가세요!'],['파워업','당신의 잠재력을 믿어요!'],['선샤인','밝은 미래가 기다리고 있어요!'],['스트롱','어떤 어려움도 이겨낼 수 있어요!'],['해피','행복한 순간들이 가득하길!'],['브레이브','용감하게 도전하세요!'],['스마일','웃음 잃지 마세요!'],['위너','당신은 이미 승리자예요!'],['에너지','긍정 에너지 가득 보내드려요!'],['별빛','어둠 속에서도 빛나는 별처럼!'],['바람','순풍이 불어주길 바라요!'],['무지개','비 온 뒤 무지개가 뜰 거예요!'],['나침반','올바른 길로 인도해드릴게요!'],['봄날','따뜻한 봄날이 올 거예요!'],['날개','높이 날아오르세요!'],['등대','길을 잃지 않도록 응원해요!'],['보석','당신은 소중한 보석 같은 존재!'],['태양','밝게 빛나는 태양처럼!'],['달빛','고요한 밤에도 빛을 잃지 마세요!'],['하트','진심 어린 마음으로 응원합니다!']];
           await cheerDB.seedSamples(samples.slice(0, need));
-          console.log('[seed] 샘플 ' + need + '개 주입 완료');
         }
       } catch (e) { console.warn('[seed] 실패:', e); }
       document.getElementById('nickname')?.focus();
