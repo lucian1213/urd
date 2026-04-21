@@ -32,26 +32,35 @@
       margin-bottom:2.5rem; color:#fff; letter-spacing:1px;
     }
 
-    /* ── 핵심: 고정 너비 + scale ── */
+    /* ── 핵심: 폰트 크기를 JS로 동적 조절 ── */
     .content-wrapper {
       margin-bottom:2.5rem;
-      overflow:hidden; /* scale 시 삐져나감 방지 */
+      width:100%;
     }
     .content {
-      width:550px;            /* 고정 너비 */
-      transform-origin:top left;
-      font-size:1rem; font-weight:400;
-      color:#e8e8e8; line-height:1.7;
+      width:100%;
+      font-size:16px;          /* JS가 덮어씀 (기본값) */
+      font-weight:400;
+      color:#e8e8e8;
+      line-height:1.7;
     }
     .content p {
       margin-bottom:0.1rem;
-      white-space:nowrap;     /* 절대 줄바꿈 안 함 */
+      white-space:nowrap;      /* 줄바꿈 고정 - 기믹 보존 */
+      overflow:hidden;         /* 혹시 모를 초과분 방지 */
     }
-    /* ────────────────────────── */
+    .content p[data-gimmick] {
+      width:fit-content;       /* 실제 텍스트 너비만큼만 차지 (측정 정확도 ↑) */
+    }
+    /* ─────────────────────────────────── */
 
     .author-name { color:#ccc; font-weight:500; }
     .section-break { margin-top:1.5rem; }
-    .last-paragraph { white-space:normal !important; } /* 마지막 문단은 자연 줄바꿈 */
+    .last-paragraph {
+      white-space:normal !important;        /* 마지막 문단은 자연 줄바꿈 */
+      word-break:keep-all;                  /* 한국어 단어/이름 중간에서 안 끊김 */
+      overflow-wrap:break-word;             /* 너무 긴 단어만 예외적으로 끊김 */
+    }
 
     .input-section {
       margin:2.5rem 0; background:rgba(20,20,20,0.8);
@@ -218,6 +227,20 @@
     .author-signature { margin-bottom:3rem; font-style:italic; color:#aaa; font-size:1rem; }
     .the-end { font-size:1.8rem; font-weight:600; color:#fff; letter-spacing:3px; margin-top:2rem; }
 
+    .retry-hint {
+      font-size:0.85rem;
+      color:#777;
+      font-style:italic;
+      margin-top:3.5rem;
+      line-height:1.7;
+      opacity:0;
+      animation:hintFadeIn 2s ease-in-out 2.5s forwards;
+    }
+    @keyframes hintFadeIn {
+      from { opacity:0; transform:translateY(6px); }
+      to   { opacity:0.85; transform:translateY(0); }
+    }
+
     @media (max-width:768px){
       .title { font-size:1.4rem; }
       .container { padding:20px 10px; }
@@ -226,6 +249,7 @@
       .green-message { font-size:1.3rem; }
       .end-main-text { font-size:1.2rem; }
       .end-thanks { font-size:1rem; }
+      .retry-hint { font-size:0.78rem; margin-top:2.8rem; }
       .cheer-content { font-size:1.4rem; }
       .cheer-author { font-size:0.9rem; }
       .epilogue-content { max-width:100%; }
@@ -285,6 +309,83 @@
     <button class="final-button" id="finalButton">마지막 페이지</button>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════════════════════
+       레이아웃 조정 스크립트 (독립 실행, 외부 의존성 없음)
+       아래 모듈 스크립트(Firebase)가 CSP 등으로 차단되더라도
+       폰트 크기/마지막 문단 너비 조정은 여기에서 정상 작동함
+       ═══════════════════════════════════════════════════════════════════ -->
+  <script>
+    (function() {
+      const BASE_FONT_SIZE = 16;   // 기본/최대 폰트 크기 (px)
+      const MIN_FONT_SIZE  = 10;   // 최소 폰트 크기 (px)
+      const SAFETY_PADDING = 4;    // 가장자리 여유 (px)
+
+      function scaleContent() {
+        const wrapper = document.querySelector('.content-wrapper');
+        const content = document.getElementById('contentArea');
+        const lastParagraph = document.querySelector('.last-paragraph');
+        if (!wrapper || !content) return;
+
+        const availableWidth = wrapper.clientWidth - SAFETY_PADDING;
+        if (availableWidth <= 0) return;
+
+        // 측정 전 초기화
+        if (lastParagraph) lastParagraph.style.maxWidth = 'none';
+        content.style.fontSize = BASE_FONT_SIZE + 'px';
+
+        // 숨겨진 측정용 span — content 내부에 붙여서 폰트 스타일 상속
+        const measurer = document.createElement('span');
+        measurer.style.cssText = 'visibility:hidden;position:absolute;top:0;left:0;white-space:nowrap;padding:0;margin:0;border:0;';
+        content.appendChild(measurer);
+
+        let maxTextWidth = 0;
+        try {
+          // 기믹 문단들 텍스트를 하나씩 span에 넣어서 실제 렌더링 너비 측정
+          const gimmickParagraphs = content.querySelectorAll('p[data-gimmick]');
+          gimmickParagraphs.forEach(function(p) {
+            measurer.textContent = p.textContent;
+            const w = measurer.getBoundingClientRect().width;
+            if (w > maxTextWidth) maxTextWidth = w;
+          });
+        } finally {
+          content.removeChild(measurer);
+        }
+
+        if (maxTextWidth === 0) return;
+
+        // 화면 폭에 딱 맞는 폰트 크기 계산
+        let newFontSize = BASE_FONT_SIZE * (availableWidth / maxTextWidth);
+        newFontSize = Math.min(BASE_FONT_SIZE, Math.max(MIN_FONT_SIZE, newFontSize));
+        content.style.fontSize = newFontSize + 'px';
+
+        // 마지막 안내 문단의 max-width = 가장 긴 기믹 줄의 너비
+        if (lastParagraph) {
+          const scaledMaxWidth = maxTextWidth * (newFontSize / BASE_FONT_SIZE);
+          lastParagraph.style.maxWidth = Math.ceil(scaledMaxWidth) + 'px';
+        }
+      }
+
+      async function init() {
+        try {
+          if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+          }
+        } catch (e) { /* 폰트 로드 대기 실패해도 일단 진행 */ }
+        scaleContent();
+      }
+
+      if (document.readyState === 'complete') {
+        init();
+      } else {
+        window.addEventListener('load', init);
+      }
+      window.addEventListener('resize', scaleContent);
+      window.addEventListener('orientationchange', function() {
+        setTimeout(scaleContent, 200);
+      });
+    })();
+  </script>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -301,21 +402,8 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // ====== 고정 너비 → scale 맞춤 ======
-    const CONTENT_FIXED_WIDTH = 550;
-
-    function scaleContent() {
-      const wrapper = document.querySelector('.content-wrapper');
-      const content = document.getElementById('contentArea');
-      if (!wrapper || !content) return;
-
-      const availableWidth = wrapper.clientWidth;
-      const scale = Math.min(1, availableWidth / CONTENT_FIXED_WIDTH);
-
-      content.style.transform = 'scale(' + scale + ')';
-      // scale은 레이아웃에 영향을 안 주므로, wrapper 높이를 수동 조정
-      wrapper.style.height = (content.scrollHeight * scale) + 'px';
-    }
+    // ====== 동적 폰트 크기 조절은 별도 <script> 태그에서 처리됨 ======
+    //   → Firebase가 CSP 등으로 차단돼도 레이아웃 조정은 정상 동작하도록 분리함
 
     // ====== Firebase DB ======
     class CheerMessageDB {
@@ -364,16 +452,28 @@
           const tout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000));
           await Promise.race([saveP, tout]).catch(() => {});
           startEncouragementSequence();
-        } else { showGameEndPage(); }
-      } catch (err) { console.error('오류:', err); isEnc ? startEncouragementSequence() : showGameEndPage(); }
+        } else { showGameEndPage(true); }
+      } catch (err) { console.error('오류:', err); isEnc ? startEncouragementSequence() : showGameEndPage(true); }
     }
 
-    function showGameEndPage() {
+    function showGameEndPage(showRetryHint) {
       document.querySelector('.completion-container')?.remove();
       document.querySelector('.correct-ending-container')?.remove();
       document.querySelector('.epilogue-container')?.remove();
       document.querySelector('.container').style.display = 'none';
-      document.body.insertAdjacentHTML('beforeend', '<div class="game-end-container"><div class="game-end-content"><div class="end-message"><p class="end-main-text">아쉽게도 게임은 여기까지입니다.</p><p class="end-thanks">즐겨주셔서 감사드립니다!</p><div class="author-signature"><p>-작가 루시안 드림-</p></div><div class="the-end"><p>THE END.</p></div></div></div></div>');
+
+      const hintHtml = showRetryHint
+        ? '<p class="retry-hint">...혹시, 다시 한 번 진심 어린 응원을 남겨보시는 건 어떨까요?</p>'
+        : '';
+
+      document.body.insertAdjacentHTML('beforeend',
+        '<div class="game-end-container"><div class="game-end-content"><div class="end-message">' +
+        '<p class="end-main-text">아쉽게도 게임은 여기까지입니다.</p>' +
+        '<p class="end-thanks">즐겨주셔서 감사드립니다!</p>' +
+        '<div class="author-signature"><p>-작가 루시안 드림-</p></div>' +
+        '<div class="the-end"><p>THE END.</p></div>' +
+        hintHtml +
+        '</div></div></div>');
     }
 
     function startEncouragementSequence() {
@@ -571,10 +671,7 @@
 
     // ====== 초기화 ======
     window.addEventListener('load', async () => {
-      // 폰트 로딩 완료 후 scale 적용
-      await document.fonts.ready;
-      scaleContent();
-      window.addEventListener('resize', scaleContent);
+      // (폰트 크기/너비 조정은 별도 <script> 태그에서 이미 처리됨)
 
       try {
         const MIN = 24;
