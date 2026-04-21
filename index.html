@@ -172,7 +172,7 @@
       overflow-y:auto; padding:20px; animation:fadeIn 1s ease;
     }
     .completion-content { text-align:left; max-width:600px; margin:0 auto; color:#fff; font-family:'Noto Serif KR', serif; line-height:1.6; padding-bottom:2rem; }
-    .completion-text { font-size:0.75rem; margin-bottom:3rem; }
+    .completion-text { font-size:0.75rem; margin-bottom:3rem; word-break:keep-all; overflow-wrap:break-word; }
     .completion-text p { margin-bottom:0.5rem; }
 
     .card-input-section {
@@ -628,7 +628,7 @@
     function showCompletionMessage() {
       const div = document.createElement('div');
       div.className = 'completion-container';
-      div.innerHTML = '<div class="completion-content"><div class="completion-text"><p>알았어. 알았어. 그만 해도 좋아.</p><br><p>아까부터 누가 말하는거냐고? 음... 뭐라고 해야할까.<br>나로 말할 거 같으면... 인간들이 흔히 말하는 신이라는<br>존재 일수도 있고, 지금 너희의 이야기인 \'운명의 세여신\'의<br>여신일 수도 있고, \'작가\'라고 말하는 존재일수도 있어.</p><br><p>이 이야기는 나의 뜻대로 정해져 있어. 너희가 아무리<br>바꾸려고 한들, 바꿀 수 없다는 이야기야. 운명이란건<br>그런거야. 아무리 발버둥쳐도 바꿀 수 없는 것.</p><br><p>노력하면 뭐든지 되는 거 아니었냐고? 그런거...너희들이<br>만든 허상에 불과해. 될 사람은 노력하지 않아도 되고,<br>안될 사람은 아무리 노력해도 안되는 거, 그게 이 세상이야.</p><br><p>...너무 한거 아니냐고? 그래 맞아. 그래서 내가 지금 굳이 나타나지<br>않아도 되는데 나타난건, 그래서 너희와 이야기하고 있는 건<br>아마 너희, 그리고 다른 무한한 세계선의 수많은 다른 이진욱, 김기태, 고윤정, 이태성의<br>의지가 모였기 때문에, 기회를 주기 위해서야. 아마 이 이야기의 엔딩을 보고 그냥<br>끝냈던 사람들, 혹은 운명을 바꾸고자 하는 의지를 담아 진심어린 응원을 보내지<br>않았던 사람들은 아마 지금 나와 이야기하지 못하고 있을 거야.<br>그만큼 너희가 운명을 바꾸고자 하는 의지가 크다는 거겠지.</p><br><p>그런 너희에게 운명을 바꿀 마지막 기회를 줄게. 지금 너희가<br>가지고 있는 것, 그러니까 카드중에 하나를 이 이야기에서 없앨<br>기회를 줄게. 너희가 올바른 선택을 한다면, 원하는대로 운명을<br>바꿀 수 있을거야.</p><br><p>명심해. 기회는 한번 뿐이야. 잘 생각해서 판단하라구.</p></div><div class="card-input-section"><p class="input-instruction">카드 번호를 입력하세요.</p><input type="text" id="cardNumber" placeholder="카드 번호를 입력해주세요" maxlength="10" inputmode="numeric" autocomplete="off" autocapitalize="off"><button id="submitCard">확인</button></div></div>';
+      div.innerHTML = '<div class="completion-content"><div class="completion-text"><p>알았어. 알았어. 그만 해도 좋아.</p><br><p>아까부터 누가 말하는거냐고? 음... 뭐라고 해야할까. 나로 말할 거 같으면... 인간들이 흔히 말하는 신이라는 존재 일수도 있고, 지금 너희의 이야기인 \'운명의 세여신\'의 여신일 수도 있고, \'작가\'라고 말하는 존재일수도 있어.</p><br><p>이 이야기는 나의 뜻대로 정해져 있어. 너희가 아무리 바꾸려고 한들, 바꿀 수 없다는 이야기야. 운명이란건 그런거야. 아무리 발버둥쳐도 바꿀 수 없는 것.</p><br><p>노력하면 뭐든지 되는 거 아니었냐고? 그런거...너희들이 만든 허상에 불과해. 될 사람은 노력하지 않아도 되고, 안될 사람은 아무리 노력해도 안되는 거, 그게 이 세상이야.</p><br><p>...너무 한거 아니냐고? 그래 맞아. 그래서 내가 지금 굳이 나타나지 않아도 되는데 나타난건, 그래서 너희와 이야기하고 있는 건 아마 너희, 그리고 다른 무한한 세계선의 수많은 다른 이진욱, 김기태, 고윤정, 이태성의 의지가 모였기 때문에, 기회를 주기 위해서야. 아마 이 이야기의 엔딩을 보고 그냥 끝냈던 사람들, 혹은 운명을 바꾸고자 하는 의지를 담아 진심어린 응원을 보내지 않았던 사람들은 아마 지금 나와 이야기하지 못하고 있을 거야. 그만큼 너희가 운명을 바꾸고자 하는 의지가 크다는 거겠지.</p><br><p>그런 너희에게 운명을 바꿀 마지막 기회를 줄게. 지금 너희가 가지고 있는 것, 그러니까 카드중에 하나를 이 이야기에서 없앨 기회를 줄게. 너희가 올바른 선택을 한다면, 원하는대로 운명을 바꿀 수 있을거야.</p><br><p>명심해. 기회는 한번 뿐이야. 잘 생각해서 판단하라구.</p></div><div class="card-input-section"><p class="input-instruction">카드 번호를 입력하세요.</p><input type="text" id="cardNumber" placeholder="카드 번호를 입력해주세요" maxlength="10" inputmode="numeric" autocomplete="off" autocapitalize="off"><button id="submitCard">확인</button></div></div>';
       document.body.appendChild(div);
       requestAnimationFrame(() => { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); div.scrollTop = 0; });
       div.querySelector('#submitCard').addEventListener('click', submitCardNumber);
